@@ -1,0 +1,486 @@
+Activating  the Modern  Classroom
+
+This page intentionally left blank.
+
+Activating  the Modern  Classroom INFORMATION AGE PUBLISHING, INC. Charlotte, NC  www.infoagepub.com Julian Reed and Jennifer Weaver-Spencer
+
+Copyright  2018 Information Age Publishing Inc. All rights reserved. No part of this publication may be reproduced, stored in a  retrieval system, or transmitted, in any form or by any means, electronic, mechanical,  photocopying, microfilming, recording or otherwise, without written permission  from the publisher. Printed in the United States of America Library of Congress Cataloging-in-Publication Data   A CIP record for this book is available from the Library of Congress      http:www.loc.gov ISBN:	 978-1-64113-260-2 Paperback
+
+978-1-64113-261-9 Hardcover
+
+978-1-64113-262-6 ebook
+
+v Contents
+
+	 Like Riding a Bike . . . Reconnecting Young Learners   to Active, Engaged Education. vii 	 1	 What Does Current Brain Research Tell Us About Movement?. 1 Physical Activity Helps People Remember. 2 How Is Physical Activity Linked to Improved Academic  Performance?. 2 What Benefits Can Students Gain if They Move As They Learn?.3 What the Research Says. 3 How Is a Lack of Physical Fitness Linked to Poor Academic  Performance?. 3 Does More Time in School-Based Physical Education PE  Hurt Students Academic Performance?. 4 	 2	 What Are Activity Breaks?. 5 What Are the Benefits of Activity Breaks During the School  Day?. 5 What Do Activity Breaks Look Like?. 6 More Research on the Importance of Activity Breaks. 6 	 3	 What Is an Integrated Curriculum?. 9 Why Is Integrating Movement and Content in Core Subject  Areas Important?. 9 What Are the Benefits of Activities that Integrate Movement  and Content in Core Subject Areas?. 10 What Do Integrated Lessons Look Like?. 10
+
+vi    Contents 	 4	 Helping Kinesthetic Learners.13 What Are Learning Styles?. 13 What Are Multiple Intelligences?. 13 Why Is Recognizing Students Learning Styles and  Matching Instructional Strategies to Those Styles  Important?. 14 Who Are Kinesthetic Learners?. 15 What Behaviors Are Typical for Kinesthetic Learners?. 16 	 5	 What Is ADHD, and Who Is Diagnosed With It?.17 How Can Movement Help Children with ADD and ADHD?. 17 What Does a 2015 Study Show About the Link Between  Attention Disorders ADD and ADHD and Movement?. 18 How Are Kinesthetic Learning and ADD and ADHD  Diagnoses Connected?. 18 	 6	 Technology in the Classroom.21 Blended Learning. 21 Benefits of Using Technology in the Classroom. 22 Integrating Technology Into Daily Lessons. 23 	 7	 Creative Movement in the Classroom and School. 27 Language Arts and Literacy. 28 Math.30 Social Studies. 33 Science. 33 	 8	 Creative Movement During the School Day. 35 Classroom Setup. 35 Start and End Each Day with Movement.36 Ways to Walk Down the Hall as a ClassWays to Line Up Waiting in Line.36 Transitions Between Activities.36 At-Desk Activity Breaks. 37 Ways to Energize Students with Movement. 37 Ways to Calm Students with Movement. 37
+
+	 Endnotes. 39
+
+	 Acknowledgments. 43
+
+Activating the Modern Classroom, pages viiix Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 vii Like Riding a Bike . . . Reconnecting Young Learners to Active,   Engaged Education I magine being taught how to ride a bicycle. Instead of learning on an  actual bike, however, youre taught with descriptions and diagrams. All  while sitting at a desk. Quietly. For some students, the descriptions are sufficient. For others, the pictures make sense. But for many, the idea of gripping handlebars and balancing on a seat while imagining youre spinning your feet wont really click  until they get up and get on a bike. Few people would advocate teaching aspiring cyclists this way. Fewer  still would advocate teaching this way if the goal was to inspire young people to fall in love with the joys of riding a bike. And yet,  the more advanced  weve become culturally and technologically, the more weve removed active, contextualized learning from elementary schools. Modern education is, sadly, more sedentary than ever. Kids are moving  less and students with learning differences and challenges are struggling  more and more. That trend isnt entirely new. Nor is the contrasting premisethe idea that movement enhances learningwholly original. The 
+
+viii    Like Riding a Bike . . . opposite is actually true: active learning is an old, old idea that mainstream  education has seemingly forgotten. Until recently. Movement in classrooms or lack thereof is finally getting more attention from academics, educators, and parents. In fact, it was attention from  an academic and a former teacher, both of whom are parents to young  learners, that inspired this book and a web-based active learning platform  called Walkabouts. Several years ago, two dads struck up a conversation about the state of  education and the challenges a growing number of students were having  connecting with fundamental material. One of those dads was a professor: Dr. Julian Reed, a leading researcher and author about the impact of  movement on the brain. The other was Matt Ferebee, a former educator  who now leads an award-winning design firmand the father of a little boy  struggling with dyslexia. We came together, two dads on a mission, to address what we talked  about during that first conversation. How can more teachers reach all students? With all sorts of learning styles? We knew there was a better waya  way that didnt add burdens or stress to teachers already heavy load. So  we set out to reconnect learners and classrooms to more active education.  Our platform was inspired by years of research, but our commitment and  passion were fueled by something even more powerful: the chance to help  kids just like our own so they could learn more effectively and actively. More  than just a company or product, we wanted to be part of a significant shift.  Think of it as a movementabout movement. Our simple tool, which lets teachers create short, standards-aligned lessons using an online dashboard, has confirmed the critical need for new  kinds of supplemental educational materials. It has also confirmed the  growing numbers of teachers and administrators across the country who  believe exactly what we do: active students learn and behave better. That  movement not only unlocks valuable context and improves recall, it also  reduces behavioral issuesnot to mention the healthier, lifelong patterns  integrated activity establishes in young students. This book is intended to offer a clear, concise snapshot of the fundamental insights, ideas, and research behind Walkabouts. Just as importantly, it lays out the commitment we share to helping students of all learning  styles move more and perform better. Were not just trying to sell a webbased platform, were trying to sell an idea. Fortunately, its not such a radical idea. Its not foreign or even that difficult or time consuming. Just like  riding a bike, all each of us has to do is remember learning with our hands 
+
+Like Riding a Bike . . .    ix and bodies. Understanding by doing. Thats exactly what we mean by activating the modern classroom. We invite you to join us as we get up out of our desks and out of our  comfort zones to take a stand, literally, for education. Matt Ferebee and Dr. Julian Reed
+
+This page intentionally left blank.
+
+Activating the Modern Classroom, pages 14 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 1 1 What Does Current Brain Research  Tell Us About Movement? B rain research consistently shows that active kids learn better. Examples  include:
+
+Brain research shows a link between movement and enhanced  cognition in children.1 According to Merriam-Webster, cognition  is conscious mental activities including thinking, understanding,  learning, and remembering.
+
+Brain research suggests that increasing movement time in  schools may support academic performance while also improving the health of children.2
+
+Evidence from leading scientists reveals strong associations  between the cerebellum and memory, spatial perception,  language attention, emotion, nonverbal cues, and decisionmaking ability among children who are active while learning  in the classroom.3
+Activating the Modern Classroom The bottom line: active kids achieve more, have increased focus, and  are healthier. Physical Activity Helps People Remember When we move, the brain has time to digest new information. Our brains  are designed to learn only a small amount of  new information at one time.4 Because children need time to process new information,  we suggest physical activity breaks. Physical activity has a positive impact  on the central and peripheral nervous systems, and in particular, on the developing  brains of children.5 The brain is activated  during physical activity by increasing blood  flow to essential areas that stimulate learning.6 Regular physical activity has been  found to promote structural changes in  the hippocampus region of the brain. The  hippocampus is an area important for  memory.7 Regular physical activity has also been  found to increase neurons, dendrites,  and synapses that are essential structural  elements located throughout the central  and peripheral nervous systems.8 Research  on the brain and brain plasticity shows  that physical activity positively impacts the  brain and brain development.9  According  to Merriam-Webster, plasticity is the capacity for continuous alteration of  the brain and nervous system in response to experiences. How Is Physical Activity Linked to Improved Academic  Performance? More than 30 years ago, researchers found a positive correlation between  physical activity and school performance. Unfortunately, despite this research, most elementary school children remain sedentary throughout the  school day.10 Physical  activity has a  positive impact  on the central  and peripheral  nervous  systems, and in  particular, on  the developing  brains of  children.
+
+What Does Current Brain Research Tell Us About Movement?    3 What Benefits Can Students Gain if They Move   As They Learn? Academic Achievement Physically active and fit children tend to have better academic  achievement.11 Engagement Physical activity stimulates the release of epinephrine and  norepinephrine adrenalin, enabling children to become  alert and ready to learn.12 Focus and Concentration Physical activity improves concentration and reading and  math performance with the strongest relationship between  activity and concentration.13 What the Research Says
+
+Eleven studies between 1967 and 2006 found that regular  participation in physical activity is associated with improved  academic performance.14
+
+Eight health studies involving population-representative samples  of children and adolescents observed statistically significant  positive correlations between physical activity participation  and academic performance.15
+
+A 2010 study suggests that integrating movement in the classroom three days per week for an average of 90 minutes total per week can enhance fluid intelligence and academic  achievement scores of elementary-age children.16
+
+A 2013 study posits that providing 45 minutes of daily physical education can increase cognitive ability while enhancing fitness and  decreasing the prevalence of overweight and obese youth.17 How Is a Lack of Physical Fitness Linked to Poor  Academic Performance? There are many positive results when students are physically active. Are  there negative effects when students are inactive?
+
+Being an overweight child has been reported to be associated  with poor IQ test performance.18
+
+Overweight third grade students have significantly lower math  and reading test scores in comparison to those of non-overweight children in third grade.19
+Activating the Modern Classroom Does More Time in School-Based Physical Education PE  Hurt Students Academic Performance?
+
+Studies consistently show that more time in PE and other schoolbased physical activity programs does not adversely affect academic performance.20
+
+PE does not negatively impact academic performance, and  regular exercise may improve students concentration and  cognitive functioning.21
+
+Activating the Modern Classroom, pages 57 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 5 2 What Are Activity Breaks? A ctivity breaks are physical activities that get students moving during  the school day. Depending on the class, school, and teacher, activity breaks may last anywhere from 3 to 20 minutes. Activity breaks should  not be used as a substitute for PE or recess. They are a way to incorporate  additional physical activity into the school day. Younger students often need  to get the wiggles out. Activity breaks can keep students on task and help  them grasp new concepts. What Are the Benefits of Activity Breaks During the  School Day?
+
+Activity breaks during the school day can improve cognitive performance and concentration.22
+
+Classroom behavior is often improved following activity breaks.23
+
+Activity breaks help students to remain active and contribute to  healthy lifestyles.
+Activating the Modern Classroom What Do Activity Breaks Look Like? Activity breaks can take many different forms. Teachers can get students out of their seats and dancing, doing jumping jacks, running in  placejust about any physical activity will work. More Research on the Importance of Activity Breaks
+
+Strong associations between the cerebellum and memory,  spatial perception, language attention, emotion, nonverbal  Effects of Daily Activity Breaks A 12-week research project conducted in eastern NC in 2006 evaluated the effects of providing elementary students with a daily 10-minute activity break. Among 243 students in kindergarten through fourth  grade, a daily activity break increased on-task behavior significantly,  by an average of 8. Among the least on-task students, activity breaks  improved on-task behavior by 20.24 Elementary students on-task classroom behavior  improves with physical activity breaks 5 0 5 10 15 20 25 3 Breaks with no physical activity 8 20 Physical activity breaks, students overall Percent change in on-task behavior Physical activity breaks, off-tasks students Jarrett, O. S., Maxwell, D. M., Dickerson, C., Hoge, P., Davies, G.,  Yetley, A. 1998.  Impact of recess on classroom behavior: Group effects and individual differences. The Journal of Educational Research 92, 121126.25
+
+What Are Activity Breaks?    7 cues, and the decision-making abilities of students have also  been found.26
+
+Research suggests that increased blood flow as a result of  movement enhances the cerebellum by promoting specific  cognitive functions.27
+
+Physical activity improves spatial learning. When the brain  encounters a space, it makes a map of that space based not  only on the physical surroundings but also on the basis of the  bodys association with the particular space.28
+
+Physical activity enables the brain to develop new maps, even if  the movement space is not new. This process serves to create additional unique learning opportunities through space.29
+
+Too much information sent to the hippocampus region of the  brain prevents the integration of information and newly learned  content.30
+
+Movement has been shown to increase brain-derived neurotropic factor that engages learning and cognition and which,  ironically, is regulated by physical activity.31
+
+This page intentionally left blank.
+
+Activating the Modern Classroom, pages 911 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 9 3 What Is an Integrated Curriculum? I n order to incorporate more movement into the school day, teachers  can use an integrated curriculum. Integrated curriculum is when two or  more subject areas are combined32 in one lesson so students learn the content simultaneously. Integrating physical activity enhances lessons for many  reasons that are detailed in this book. Why Is Integrating Movement and Content in Core Subject  Areas Important? In addition to the academic benefits of integrating movement and core  content in the classroom, this integration also provides important health  benefits for students. Integrating movement into classroom lessons can be  beneficial for schools that are increasingly filled with sedentary and overweight children.33
+Activating the Modern Classroom What Are the Benefits of Activities that Integrate  Movement and Content in Core Subject Areas?
+
+When physical activity is included as part of classroom activities,  the interaction between the child and the content is more complete because the whole child is actively involved.34
+
+Using physical activity to teach core content not only increases  movement time for children and helps to prevent obesity, but it  also enhances knowledge retention and brain changes.35
+
+Integrated curriculum allows students to better grasp material  from other content areas through basic movements.36
+
+Researchers have found that when children expend energy  through physical activity, their time on task increases, and there  is significantly less fidgeting in comparison to school days without  scheduled activity breaks.37
+
+When regular physical activity is integrated with traditional elementary school curricula, improved concentration, reading and  mathematics performance, and academic achievement have been  documented.38
+
+Providing movement opportunities throughout the school day  helps teachers become better educators while students remain on  task and enjoy learning.39 What Do Integrated Lessons Look Like? Lessons that integrate physical activity and core content areas engage students  by getting them up and out of their seats and make lessons active and  more fun. According to Education Has Some New Moves by Mike Foley  published in the Greenville News 2009, active learning can take many  forms. Teachers can: Integrated curriculum is when   two or more subject areas are combined   in one lesson.
+
+What Is an Integrated Curriculum?    11
+
+Teach spelling by having students move their bodies to form letters or write giant letters in the air with their fingers.
+
+Let students demonstrate how Earth moves in a 24-hour rotation  and revolves around the sun by having students pretend they  are Earth and circle and spin around a flashlight the sun in a  partially darkened classroom.
+
+Teach students to take their pulses after doing physical exercise.
+
+This page intentionally left blank.
+
+Activating the Modern Classroom, pages 1316 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 13 4 Helping Kinesthetic Learners What Are Learning Styles? Learning styles are the ways people process information.40 Students preferred learning styles have a significant influence on both their behavior  and their learning.41 Information that is accessed when students use their  preferred learning styles shows an increase in students levels of comprehension, motivation, and metacognition.42 What Are Multiple Intelligences? Howard Gardners Theory of Multiple Intelligences states that people have  several relatively separate and different intellectual capacities.43 Gardner  identified eight intelligences:44
+
+Musicalrhythmic and harmonic
+
+Visualspatial
+
+Verballinguistic
+Activating the Modern Classroom
+
+Logicalmathematical
+
+Bodilykinesthetic
+
+Interpersonal
+
+Intrapersonal
+
+Naturalistic Why Is Recognizing Students Learning Styles and  Matching Instructional Strategies to Those Styles  Important? Differentiated instruction tailors education based on the needs of students.  Using multisensory lessons helps teachers cater to many different learning  styles in one lesson. In subjects including reading and math, increased levels of achievement have been linked with matching instructional strategies  to individual learning styles.45 The kinesthetic learning style is often the most neglected learning style  in the classroom.46 In many classrooms, movement is not encouraged and  M US IC AL NA TU RA LI ST IC LO GI CA LM AT HE M AT IC AL VE RB AL -L IN GU IS TI C IN TE RP ER SO NA L BO DI LY -K IN ES TH ET IC VI SU AL -S PA TI AL IN TR AP ER SO NA L
+
+Helping Kinesthetic Learners    15 often results in punitive treatment.47 This can have a negative impact on  kinesthetic learners. Experts understand that humans must move in order  to learn.48 This is especially true for kinesthetic learners. For kinesthetic  learners, movement is learning.49 Who Are Kinesthetic Learners?
+
+Kinesthetic learners, or people with the bodily-kinesthetic intelligence, have the capacity to use their whole bodies to express  themselves. They are interested in learning through creative  movement and often do well when they can move and are not  required to stand still.50
+
+Kinesthetic learners often prefer to create or solve problems by  moving their bodies. Many children with strong kinesthetic intelligence learn by moving.51
+
+Children who prefer the kinesthetic learning style need to move  in order to appropriately interpret their sensory stimuli. Yet, most  schools in the United States continue to require children to be  seated throughout the school day.52 . . . every movement is a sensory-motor  event, linked to the ultimate understanding  of our physical world, the world   from which new learning derives. Carla Hannaford, Neurophysiologist, 1995
+Activating the Modern Classroom What Behaviors Are Typical for Kinesthetic Learners? Kinesthetic Learners53 Move around a lot Touch people they are talking to Enjoy physical activities Take frequent breaks when studying Move their hands when they talk Enjoy touching things Solve problems by physically working  through them Tap their pencils or feet while doing  schoolwork Express their feelings physically hugging,  hitting, etc. Have difficulty sitting still for extended  periods of time Excel in athletics and the performing arts Are often considered hyperactive Source: Adapted from Helping Kinesthetic Learners Succeed
+
+Activating the Modern Classroom, pages 1719 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 17 5 What Is ADHD, and Who Is   Diagnosed With It? T he National Institute of Mental Health lists symptoms of ADHD as difficulty staying focused and paying attention, difficulty controlling behavior, and hyperactivity or over-activity.54
+
+Approximately 11 of children ages 4 to 17 were diagnosed with  ADHD as of 2011.55
+
+The percentage of children with a diagnosis of ADHD increased  from 20032011 from 7.8 in 2003 to 9.5 in 2007 and to  11.0 in 2011.56
+
+Boys 13.2 are more likely than girls 5.6 to be diagnosed  with ADHD.57 How Can Movement Help Children with ADD and ADHD? Using movement as a tool to enhance learning has been found to decrease  behavioral episodes of children with ADD and ADHD.58 Some ADD and 
+Activating the Modern Classroom ADHD can be treated with non-pharmacologic agents such as physical activity.59  Perhaps teaching the elementary curriculum with specific emphasis  on fundamental movements could decrease the symptoms associated with  ADD and ADHD.60 What Does a 2015 Study Show About the Link Between  Attention Disorders ADD and ADHD and Movement?61 According to a 2015 study by the MIND Institute at the University of CaliforniaDavis, physical activity seems to allow children with ADHD to focus  on what they are doing. In children with a diagnosis of ADHD, the 2015 study found:
+
+Children who moved more intensely showed better cognitive  performance.
+
+The accuracy of childrens performance on tests significantly  improved when they were moving.
+
+Hyperactivity in children with ADHD may help them think. How Are Kinesthetic Learning and ADD and ADHD  Diagnoses Connected? Many children seen at the National Reading Diagnostics Institute in Naperville, Illinois had previously received a diagnosis of ADD or ADHD. In-depth  reading evaluation often showed that rather than having ADD or ADHD,  these children were kinesthetic learners who needed to engage in gross  motor activity to learn best. After they were given the opportunity to learn  Teachers should seek activities  that are not disruptive that allow their  students with ADHD to use movement,  because it assists them with thinking. Arthur Hartanto, Study Coordinator, 2015
+
+What Is ADHD, and Who Is Diagnosed With It?     19 through methods involving movement, their ADHD-like behavior often disappeared.62 Kinesthetic learners require body movement and action for optimal results. They need to move around, use their muscles, or explore.63 When a child exhibits behaviors associated  with ADHD, consequences may include  difficulties with academics and with forming  relationships with his or her peers if  appropriate instructional methodologies and  interventions are not implemented. 64 U.S. Department of Education
+
+This page intentionally left blank.
+
+Activating the Modern Classroom, pages 2125 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 21 6 Technology in the Classroom T he phrase technology in the classroom may bring to mind students prepping for a standardized test. You may imagine students wearing headphones and sitting in front of a row of computers. However, the integration  of technology into the classroom environment can look very different and  can provide numerous benefits. Blended Learning Many teachers opt for a blended learning atmosphere in the classroom.  According to Wikipedia, Blended learning is a formal education program  in which a student learns at least in part through delivery of content and  instruction via digital and online media with some element of student control over time, place, path, or pace. According to Technology in the Classroom: The Benefits of Blended Learning by Timothy Huneycutt, there  are several benefits of blended learning. Using technology in the classroom can keep students focused for longer periods of time and makes 
+Activating the Modern Classroom students more excited to learn http:www.nms.orgNews-and-Views Blog2013October-2013Technology-in-the-Classroom-The-Benefits-ofBlende.aspx. Benefits of Using Technology in the Classroom Effects of Technology on Classrooms and Students reports, The most  commonand in fact, nearly universalteacher-reported effect of technology use on students was an increase in motivation. Teachers and students are sometimes surprised at the level of technology-based accomplishment displayed by students who have shown much less initiative or facility  with more conventional academic tasks. https:www2.ed.govpubs EdReformStudiesEdTecheffectsstudents.html The reasons teachers integrate technology into daily lessons vary. A  2013 PBS LearningMedia survey conducted 503 web-based interviews with  U.S. teachers of students in prekindergarten through12th grade. According  to the survey, Three-quarters of teachers surveyed link educational technology to a growing list of benefits saying technology enables them to reinforce and expand on content 74, to motivate students to learn 74,  and to respond to a variety of learning styles 73. Seven in 10 teachers  69 surveyed said educational technology allows them to do much more  than ever before for their students. In addition, more than two-thirds  68 of teachers expressed a desire for more classroom technology and  this number is even greater in low-income schools 75 http:www. pbs.orgaboutblogsnewspbs-survey-finds-teachers-are-embracing-digital-resources-to-propel-student-learning. A 2014 Educause survey conducted by Eden Dahlstrom, D. Christopher  Brooks, and Jacqueline Bichsel collected responses from 75,306 undergraduate students at 213 institutions. Among the surveys key findings:
+
+More students than ever have experienced a digital learning  environment. The majority say they learn best with a blend of  online and face-to-face work.
+
+In addition, Technology is embedded into students lives, and  students are generally inclined to use and to have favorable  attitudes toward technology. https:library.educause.edu resources2014102014-student-and-faculty-technology  -research-studies
+
+Technology in the Classroom    23 Integrating Technology Into Daily Lessons The ways teachers can integrate technology into daily lessons are seemingly  endless. Students can:
+
+Use technology including Google docs to complete individual  and collaborative projects and reports.
+
+Use tablets, computers, and phones to play learning gamesapps.
+
+Use computers to prep for standardized tests.
+
+Run classroom Twitter, Instagram, and Snapchat accounts.
+
+Access content through digital textbooks.
+
+Use educational software or web-based lessons to learn new concepts and to reinforce previously taught content. When deciding what types of technology to bring into the classroom,  teachers may ask themselves many questions, including:
+
+What technology will reach my students?
+
+What access to technology computer, Internet do my students  have at home?
+
+What are the pros and cons of using a particular technology in  the classroom?
+
+What technology does my school provide for my classroom?
+
+What technology can I access for free?
+
+What technology is available through grants or crowd-funding  opportunities? The following web-based programs provide free and paid content. BrainPOP www.brainpop.com BrainPOP is a website that provides free and paid access to animated  movies, learning games, interactive quizzes, primary source activities, and  more. BrainPOP covers subject areas including science, math, social studies, English language arts, technology, engineering, arts, music, health, and  reading. BrainPOP content is mapped to Common Core and aligned to academic standards. In addition, BrainPOP is available in several languages.  Homeschool parents, teachers, schools, and districts can access some content at no cost and can purchase web-based access to all of BrainPOPs content. This content, however, does not integrate movement into the lessons.
+Activating the Modern Classroom GoNoodle www.gonoodle.com GoNoodle is a website that provides free and paid access to hundreds of  interactive and core subject-aligned videos and games. GoNoodle makes it  easy for teachers to integrate movement in the classroom with content that  gets kids running, jumping, dancing, and more. Parents and teachers can  access some content at no cost and can purchase web-based access to all of  GoNoodles content. With GoNoodle Plus the paid version, students can  move purposefully while practicing core subjects, and teachers can access  customizable videos and games and reporting on minutes of physical activity. Walkabouts by ActivEd www.getwalkabouts.com Walkabouts are supplemental web-based lessons for prekindergarten  through 2nd grade students that focus on math, language arts, and reading. The characters Jax and Gia lead students through standards-based,  movement-rich lessons that are designed based on active learning research.  Walkabouts not only bring technology into the classroom, they also integrate movement with technology. ActivEd believes that effective use of technology involves students engaging with their content. When students take part in Walkabouts, they are up and out of their  seats performing integrated activities that focus on both physical activity  and the core subject areas of math, language arts, and reading. Movements students engage in during Walkabouts include:
+
+running in place
+
+jumping jacks
+
+high knees
+
+fast feet
+
+skipping
+
+hopping
+
+jumping
+
+stretching
+
+touching toes
+
+stomping
+
+squatting
+
+lunging
+
+Technology in the Classroom    25 Features of Walkabouts
+
+Walkabouts use movement to reinforce core concepts in math,  language arts, and reading.
+
+Walkabouts get students up and out of their seats.
+
+Walkabouts allow students to move while they complete activities.
+
+Teachers can assess students as they complete activities and email  parents about student progress directly from the Walkabouts  platform.
+
+Teachers can print and assign Walkabouts supplemental PDF  worksheets that include a movement component for additional  skill practice.
+
+Teachers can assign Walkabouts for students to complete at home. Benefits of Walkabouts
+
+Walkabouts provide health benefits by allowing students to move  more often during the school day.
+
+Walkabouts help teachers, schools, and districts address childhood obesity with increased physical activity.
+
+Walkabouts promote brain health through movement.
+
+Walkabouts help reduce behavior management and discipline  issues in the classroom.
+
+Walkabouts help increase on-task behavior.
+
+Walkabouts allow all students, including kinesthetic learners and  students with ADHD, to move as they learn. Get a free trial to get your students moving and learning. http:info. activedinc.commove-to-learn
+
+This page intentionally left blank.
+
+Activating the Modern Classroom, pages 2734 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 27 7 Creative Movement   in the Classroom and School C reative teachers often incorporate movement into their lessons to engage students and meet the needs of kinesthetic learners and students  with ADHD. The following teachers and writers contributed creative movement  activities.
+
+Suzannah Evans, kindergarten teacher and former infant  prekindergarten, PE, and special education teacher, Colorado
+
+Jennifer Stith, freelance writer and former Grades 14 and special education teacher, North Carolina
+
+Kelly Gunzenhauser, prekindergarten teacher and freelance  writer, North Carolina
+
+Jennifer Geck, freelance writer and former first grade teacher,  North Carolina
+
+Jennifer Shriver, first grade teacher, Greenville, South Carolina
+Activating the Modern Classroom Language Arts and Literacy
+
+Letter Movements: Do a unique movement activity when introducing or studying each letter of the alphabet. For example, play  basketball for b, stomp grapes for g, do jumping jacks for j, do  planks for p, etc. Suzannah Evans
+
+Beginning Writing: Have students draw lines, squiggles, loops,  mountains, circles, and other pre-writing symbols in the air.
+
+Letter Writing: Have students write each uppercase andor lowercase letter in the air.
+
+Letter Ribbon Writing: Tape or glue ribbons to the ends of dowels or unsharpened pencils. Have students use the ribbon to write  letters in the air. Jennifer Stith
+
+Letter Writing: Have students draw uppercase andor lowercase  letters in sand or flour. Suzannah Evans
+
+Whole Body Letters: Call out a letter and have students make the  letter with their bodies. They can stand up or lie on the floor.  Suzannah Evans
+
+Jump Rope Letters: Give each student two jump ropes. Call out a  letter and have students use the jump ropes to form the letter. To  make it more challenging, allow students to use only one hand or  only their feet. Jennifer Stith
+
+Recite the Alphabet: Have students choose a motion and recite  the alphabet while doing the motion. Motions can include running, walking, marching, skipping, lunging, or hopping.
+
+Repeated Words, Repeated Movements: Choose a book that  repeats a word often. Have students listen for the word and reach  both hands up to the sky or clap or other movement when they  hear the word as you read the story. Jennifer Stith
+
+Sight Word Targets: Write sight words on index cards and tape  the cards to a wall or scatter them on the floor. Have students say  a sight word they are aiming for and throw a soft ball or knotted  socks at the word. If they hit the word, they collect the card. If  they miss the word, they say it again and spell it. Jennifer Stith
+
+Vowel Sound Movements: Say or write on the board a series  of one-syllable words with long or short vowels. Have students  stretch up for long vowels and squat for short vowels.
+
+Vowel Sounds Sorting: Designate a location in the room for each  vowel sound corner of classroom or under a classroom table.  Give each student a CVC or other word such as bus. Shout,  Short Sort or Long Sort and have students move quickly 
+
+Creative Movement in the Classroom and School     29 to the location for their vowel. This could work for consonant  sounds as well. Jennifer Stith
+
+Syllables: Write a series of words on the board that have different numbers of syllables. If desired, say the words aloud. Have  students lunge and say each syllable in the word.
+
+Ball Toss Spelling: Practice spelling words by tossing a ball back  and forth between two students. Each time the ball is caught, a  letter is called. If the ball drops, students have to begin spelling  the word again. For each word completed, have students change  the type of ball they are throwing or change the distance between  them by taking a step back. Jennifer Stith
+
+Move and Spell: Practice spelling words by saying letter names  and moving to show how the letter shapes look when they are  written on handwriting paper. If the letter is an ascender like b,  k, or l, reach up. If the letter touches the midline like a, c, or e,  put hands on hips. If the letter is a descender like j, p, or g, squat  down low. For example, the word pole would be squat, hands on  hips, reach up, hands on hips. Jennifer Shriver
+
+Whole Body Spelling: Practice spelling by having small groups  spell words with their bodies sight words, spelling words, word  family words, rhyming words, opposites, vocabulary words, etc.  Each child in the group should form a letter with his or her body.  The class should read each word.
+
+Sideways Spelling: When spelling a word, have students hop  and spell each sound. For example, for the word chill, students  should hop in place for c and h for the ch sound, hop to the  right for i, hop to the right for l, and hop in place for the final l  for ll. Jennifer Geck
+
+CVC Word Slide: Have students practice stretching outblending  letter sounds to make words. Provide paper plates and have each  student place a paper plate under each foot. Put three letters to  make a CVC word about one foot apart in front of a child. For  example, use the word hat. Have student start to the left of the first  letter in the word. Have the child say the initial letter sound h  as her right foot slides to the h. Bring the left foot over to meet  the right. Have the child say the middle sound a as her right  foot slides to the a. Bring the left foot over to meet the right. Have  the child say the ending sound t as her right foot slides to the t.  Bring the left foot over to meet the right. Jennifer Stith
+
+Punctuation: Write a sentence on the board. Have students look  at the sentence and squat for a period, move one arm quickly in 
+Activating the Modern Classroom a comma shape for a comma, wiggle for a question mark, jump  twice for a colon, and jump up and then squat for an exclamation mark.
+
+Verb Charades: Pair or group students. Have one student choose  an action word and act it out. Have the other students guess the  verb. Then, students should switch roles. Jennifer Stith
+
+Hoop Sentences: Stand three large hoops around the classroom  students may need to hold the hoops upright for classmates.  Write several words on index cards in each of the following categories: subjects, verbs, and prepositional phrases. Place a pile of  cards from one category beside each hoop. Have students crawl  through each hoop and take a card. After each student has collected three cards, they should return to their seats and put their  cards in order to make a silly sentence. For example, The frog  cooks under the rock. Jennifer Stith Math
+
+Number Writing: Have students draw numbers in the air.
+
+NumberShape Ribbon Writing: Tape or glue ribbons to the ends  of dowels or unsharpened pencils. Have students use the ribbon  to write numbers or draw shapes in the air. Jennifer Stith
+
+Number Writing: Have students draw each number in sand or  flour. Suzannah Evans
+
+Jump Rope Numbers: Give each student two jump ropes. Call  out a number and have students use the jump ropes to form the  number. To make it more challenging, allow students to use only  one hand or only their feet. Jennifer Stith
+
+Counting: Have students count to 10, 20, 100, or more by running, walking, or lunging, and counting each step.
+
+Chalk Skip Counting: Practice skip counting using a form of hopscotch. Write the numbers being counted in a vertical line using  chalk. Have students countsay each number as they hop on the  number. Alternatively, write all of the numbers in a sequence and  have students hop only on the numbers to skip count by 2s, 3s,  5s, etc. Jennifer Stith
+
+Jump Rope Shapes: Give each student two jump ropes. Call out  a shape and have students use the jump ropes to form the shape.  To make it more challenging, allow students to use only one  hand or only their feet. Jennifer Stith
+
+Creative Movement in the Classroom and School     31
+
+Building Shapes: Have students build large shapes on the floor  with foam pool noodles, wooden blocks, or foam balance beam  pieces. Then, let students sit inside each shape. Suzannah Evans
+
+Shape Riddles: Use chalk or tape to create large 2D shapes. Call  out a shape riddle and have students run, skip, stomp, or march  to the shape they think is the answer. Create multiple versions of  each shape to avoid crowding. Jennifer Stith
+
+2D Shape Dance: Teach students the basic two-step dance. Use  chalk or tape to create large 2D shapes. Play music, and have  each student travel the lines of the shape while doing the twostep dance. Stop the music and change shapes. Jennifer  Stith
+
+Pattern Match: Draw a pattern on the board. Have students use  different movements to copy the pattern. For example, an AB  pattern shown could be written as JSJS where J  jump and S   squat. Other motions could include stomp, turn in a circle, raise  arms, touch toes, run in place, etc. Jennifer Stith
+
+Number Sorting: Designate a location in the room for each number corner of classroom or under a classroom table 0 to 9. Give  each student a math problem with an answer 0 to 9. Shout, Number Sort and have students move quickly to the location for their  number. This could work for addition, subtraction, multiplication,  or division and for larger numbers as well. Jennifer Stith
+
+Points of Contact: Group students in pairs. This partner game requires students to cooperate, problem solve, and count. Students  should hold hands or link arms and work together so they have a  certain number of contact points with the floor. For example: Two  points of contact would require each student to stand on one foot.  Five points of contact would require both students to stand on two  feet and one student to touch the floor with one hand. The game  gets harder as the numbers get higher. Suzannah Evans
+
+Skip Counting: Have students skip count by 5s or 10s by flashing  the correct number of fingers while skipping, hopping, or jumping.
+
+Math Facts: Have students run, walk, march, or lunge as they say  math facts. Math facts can include addition facts, subtraction  facts, multiplication facts, or division facts.
+
+Math Facts Relay: Divide the class into two teams. Make sure  each team includes students who know math facts and students  who are fast runners. Have an assistant stand at the other end of  the racecourse. Students should run to the assistant, draw a flash  card, solve the math problem, and run back to tag the next team  member. Kelly Gunzenhauser
+Activating the Modern Classroom
+
+Bowling for Sums: Program plastic cups with desired numbers  numbers under 10, groups of tens, etc. depending on the skill  being reinforced. Stack the cups or place them in a bowling pin  configuration. Have students roll a ball toward the cups. Have students add together the numbers on the cups that are left standing.  Alternatively, the numbers on the cups that are knocked down  should be added together to get a sum. Jennifer Stith
+
+Telling Time: Call out a time. Have students use their own arms  and hands to show the time. The right arm should be used as the  hour hand and the left arm should be used as the minute hand.  Jennifer Stith
+
+Measurement Scavenger Hunt: Measure a few objects in the classroom. Give students the measurements for example: 25 inches  wide, 60 inches tall, 20 feet long without telling them what  objects they correspond to. For example, measure the length of  the room, the width of the white board, or the height of the windowsill. Have students measure things in the room until they find  objects whose length, width, height, or area for older students  correspond to each measurement. Kelly Gunzenhauser
+
+Hopscotch Math: Draw a traditional hopscotch path outside  with chalk or create a path inside with masking tape. Fill the  path with numbers 1 to 10 or 1 to 20. Have students jump on the  numbers in the following ways: in numerical order; odd numbers  only; even numbers only; jump on and add the first and second  numbers, jump on and add the second and third numbers, and  so on. Another option is to fill the hopscotch path with fractions  and fraction pictures or fractions in increasing size and have students jump to find the matching pairs or jump to show the order.
+
+Sideways Math: When completing an addition fact, have students  jump to the side and back to center as they count. For example,  for the problem 4  5  9, students should count and jump four  times to the left, then count on and jump five times to the right.  Jennifer Geck
+
+Greater Than, Less Than, Equal To: Write numbers on the left  and right side of the board. Have students decide which number  is the largest. Students should make alligator arms v-shaped  arms that open toward the larger number. If the numbers are  the same, students should stack their arms to make an equal sign.  Then, if desired, write the correct symbol on the board, and have  the class read each problem aloud.
+
+Creative Movement in the Classroom and School     33 Social Studies Note: The following activities are adapted from Active Education: Lessons for  Integrating Physical Activity with Language Arts, Math, Science and Social Studies  by Dr. Julian Reed Nova Science Publishers, Inc., 2009.
+
+Movement to Music: Play music from from different cultures of  the world for students. Have children learn traditional or modern movements to the music that represent the culture of the  country. Teach a movement that is considered American such  as the Electric Slide. Then, teach a movement from a different  country and discuss the differences.
+
+Cardinal Directions: Teach students the four cardinal directions  north, south, east, and west. Place students in the center of the  classroom and have them point to the varying cardinal directions. Have the class move as a group hop, march, slide, etc. to  the north, then move back to the center. Repeat with a different  movement pattern to a different direction.
+
+Directional Awareness: Have students move crawl, dance, skip,  etc. toward the location of a particular region in the United  States or world. For example, if you say California, students  should move west.
+
+Geography Movement: Place maps of countries, states, continents, etc., in different parts of the classroom. Ask students to  identify places by moving to wiggling, walking like a robot, doing knee lifts the place to show their answer.
+
+Movement Timeline: Write the events in a timeline, stages in a  procedure, steps in a process, etc., on poster board and place them  on the floor. Have a small group work to put the steps in order. Science Note: The following activities are adapted from Active Education: Lessons for  Integrating Physical Activity with Language Arts, Math, Science and Social Studies  by Dr. Julian Reed Nova Science Publishers, Inc., 2009.
+
+Fun with Orbits: Assign each student a planet and the sun. Have  students get in order and orbit around the sun using a specific  movement for each planet. Each planet should have a different  movement for example: hop, skip, run, jump, etc. so the planets can be distinguished. Students should keep the correct order  as they orbit.
+Activating the Modern Classroom
+
+Water Cycle: Review the water cycle with the class. Then, have students act out each part of the water cycle. For example, students  can wiggle their fingers and move repeatedly from standing to  squatting to indicate rain. Healthy Heart: Present information about the body and the role  of the heart to students. Have students take their radial or carotid  pulse while at rest. Then, after 30 seconds of jogging in place, have  students check their pulse again. Compare the numbers and discuss  why their heart and respiration rates changed following jogging.
+
+Multisensory Learning: Discuss how learning is multisensory and  how our bodies rely on our senses. Create large cards symbolizing each of the senses and display them around the room. Have  students work in small groups. Create a group of cards for each  small group that includes each sense for example: ringing doorbell, baking cookies, eating an apple, etc. Students should read  the cards and move hop, skip, jump, do knee lifts, etc. to the  corresponding sense card.
+
+Move Like an Atom: Review the role of atoms from the scientific  perspective. Have students pretend they are atoms and ask them to  move like an atom. Ask students to show how close together they  would need to be if they were a solid answer  very close. Ask students to show how close atoms in a liquid answer  farther apart  or a gas answer  spread out all over the room would be.
+
+Hopscotch Food Chain: Create hopscotch boards with varying  animals in the food chain. Have students act as a predator and  hop on the animals they would prey on starting from the predator highest in the food chain and ending with the prey lowest in  the food chain.
+
+Activating the Modern Classroom, pages 3538 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 35 8 Creative Movement During the School Day Classroom Setup
+
+Learning Stations: Instead of having children work at their  desks, set up stations. Create several stations around the room.  If needed, push four desks together and remove the chairs. At  each station, have students complete a different activity. Activities  may include math problems, a reading comprehension exercise,  tangrams, a grammar exercise, an experiment, a series of physical  exercises, an art activity, a simple craft, etc. All activities should  take about the same amount of time to complete. Assign students  to groups for each station. Have students walk, skip, hop, dance,  etc., from desk to desk and station to station and complete the  activity at each station. Kelly Gunzenhauser
+Activating the Modern Classroom Start and End Each Day with Movement
+
+Dance Party Dismissal: End every Friday or every day! with a  dance party. Let students dance down the hall to the bus lot, car  rider line, or front door of the school. Jennifer Geck Ways to Walk Down the Hall as a ClassWays to Line  UpWaiting in Line Waiting in Line: If your class is restless when waiting in line, have  them stand beside a wall and push the wall. This activates large muscle groups and can calm restless behavior. Kelly Gunzenhauser
+
+Secret Agent: Have students pretend they are spies and tiptoe  down the hall silently. Suzannah Evans
+
+Marshmallow Feet: Have students pretend they have at least  three jumbo marshmallows under their feet as they walk down  the hall. Suzannah Evans
+
+Invisible Child: Have students pretend they are invisible. Students should imagine they cant be seen or heard and cant make  eye contact with anyone. Suzanne Evans Transitions Between Activities
+
+Spider Web Group Assignments: Assign group work with yarn  spider webs. Line up a few desks in the back of the room. Place  a notebook containing a group assignment on each desk. Tie or  tape one end of a roll of yarn to a notebook, then run the yarn  all around the classroom: over desks, around chairs, etc. Repeat  using a different color of yarn for each notebook. Assign students  to groups and give each group a loose end of yarn. When the  groups unravel the yarn and find their notebooks, students can  begin their group work. Kelly Gunzenhauser
+
+Transition Movements: When students need to get in line, move  to stations, gather materials, etc., have them move like animals.  Students can: Gallop like a horse. Soar like an eagle. Hop like a frog. Flutter like a butterfly. Swim like a fish. Crawl like an insect. Slither like a snake. Buzz like a bee. Fly like a bird. Scurry like a mouse.
+
+Creative Movement During the School Day    37 At-Desk Activity Breaks Movements to Do While in a Chair
+
+Swim with arms.
+
+Move legs and feet to pretend to ride a bike.
+
+Lift knees.
+
+Pretend to paddle a canoe.
+
+Pretend to run in place.
+
+Do heel touches.
+
+Do toe touches.
+
+Stand and do chair squats. Ways to Energize Students with Movement
+
+Swim with arms.
+
+Do jumping jacks.
+
+Hop on one foot, then the other.
+
+Move arms in a circle.
+
+Dance to lively music.
+
+Do knee lifts.
+
+Run in place.
+
+Do heel taps.
+
+Do toe taps.
+
+Twist at the waist.
+
+Squat.
+
+Touch toes.
+
+Do windmills. Start with arms above head and bend at the waist  while touching opposite hands to feet. Ways to Calm Students with Movement
+
+Mindful Moments: Have students close their eyes, and focus  on their breathing. Play a chime at decreasing volume. Have  students raise a hand when they cant hear the chime anymore.  Suzannah Evans
+
+Yoga Poses
+
+Downward facing dog
+
+Childs pose
+
+Tabletop pose
+
+Cobra pose
+Activating the Modern Classroom
+
+Deep Breathing: Take a deep breath, hold it for three seconds,  and exhale. Repeat three times.
+
+Shoulder Roll: Roll shoulders forward, then backward.
+
+Neck Rolls
+
+Drop chin to chest slowly and roll neck to one side, then the  other. Then, bend head to back and roll neck slowly to one  side, then the other.
+
+Tilt head slowly to one side, then the other.
+
+Turn head slowly to one side, then the other.
+
+Soothing Sounds: Play a soothing sound such as a rain stick,  chime, bell, or soft music. Have students move slowly during the  sounds. Note: Some phones have these sounds as ringtones. The  sounds may also be available through a sleep sounds app.
+
+Stretches
+
+Stretch from side to side in with rainbow arms.
+
+Lunge slowly from side to side.
+
+Alternate pointing toes and stretching legs in front of the  body.
+
+Start with arms above head. Stretch arms. Slowly bend at the  waist to touch toes. Return to standing by slowly rolling the  spine and then neck.
+
+Move arms slowly in large circles.
+
+Activating the Modern Classroom, pages 3942 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 39 Endnotes 1.	 Reed, J. A. 2009. Active education: Lessons for integrating physical activity with  language arts, science and social studies. New York, NY: Nova Science Publishers,  Inc., 11. 2.	 Reed, J. A. 2009. Active education: Lessons for integrating physical activity with  language arts, science and social studies. New York, NY: Nova Science Publishers,  Inc., ix. 3.	 Ibid. 4.	 Jensen, E. 2000. Moving with the brain in mind. Educational Leadership,  583, 3437. 5.	 Reed, J. A. 2009. Active education: Lessons for integrating physical activity with  language arts, science and social studies. New York, NY: Nova Science Publishers,  Inc., 11. 6.	 Blakemore, C. L. 2003. Movement is essential to learning. Journal of Physical  Education, Recreation and Dance, 74, 2224, 41. 7.	 Jensen, E. 2000. Moving with the brain in mind. Educational Leadership,  583, 3437. 8.	 Cotman, C. W., and Engesser-Cesar, C. 2002. Exercise enhances and protects  brain function. Exercise and Sport Sciences Reviews, 302, 7579. 9.	 Hannaford, C. 1995. Smart moves: Why learning is not all in your head. Arlington, VA: Great Ocean Publishers. 10.	 Jensen, E. 2000. Moving with the brain in mind. Educational Leadership,  583, 3437. 11.	 Gabbard, C., and Barton, J. 1979. Effect of physical activity on mathematical  computation among young children. Journal of Psychology, 103, 287288. 12.	 Ibid.
+Endnotes 13.	 Trost, S. G. 2007. Physical education, physical activity and academic performance.  Active Living Research and the Robert Wood Johnson Foundation. 14.	 Hannaford, C. 1995. Smart moves: Why learning is not all in your head. Arlington, VA: Great Ocean Publishers. 15.	 Jensen, E. 2000. Moving with the brain in mind. Educational Leadership,  583, 3437. 16.	 Taras, H. 2005. Physical activity and student performance at school. Journal  of School Health, 756, 214219. 17.	 Taras, H. 2005. Physical activity and student performance at school. Journal  of School Health, 756, 214219. 18.	 Trost, S. G. 2007. Physical education, physical activity and academic performance.  Active Living Research and the Robert Wood Johnson Foundation. 19.	 Ibid. 20.	 Reed, J. A., Einstein, G., Hahn, E., Hooker, S. P., Gross, V. R., and Kravitz, J.  2010. Examining the impact of integrating physical activity on fluid intelligence and academic performance in an elementary school setting: A preliminary investigation. Journal of Physical Activity and Health, 7, 343351. 21.	 Reed, J. A., Maslow, A. L., Long, S., and Hughey, M. 2013. Examining the  Impact of 45 minutes of daily physical education on cognitive ability, fairness  performance, and body composition of African American youth. Journal of  Physical Activity and Health, 10, 185197. 22.	 Campos, A. L., Sigulem, D. M., Moraes, D. E., Escrivao, A. M., and Fisberg, M.  1996. Intelligence quotient of obese children and adolescents by the Wechsler  scale. Revista de Saude Publica, 301, 8590. 23.	 Li, W. 1995. A study of intelligence and personality in children with simple  obesity. International Journal of Obesity and Related Metabolic Disorders, 19, 355357. 24.	 Maeda, J. K., and Murata, N. M. 2004. Collaborating with classroom teachers  to increase daily physical activity: The GEAR program. Journal of Physical Education, Recreation and Dance, 75, 4246. 25.	 Trost, S. G. 2007. Physical education, physical activity and academic performance.  Active Living Research and the Robert Wood Johnson Foundation. 26.	 Ibid. 27.	 Ibid. 28.	 Ibid. 29.	 Ibid. 30.	 Jarrett, O. S., Maxwell, D. M., Dickerson, C., Hoge, P., Davies, G., and Yetley, A.  1998. Impact of recess on classroom behavior: Group effects and individual  differences. The Journal of Educational Research 92, 121126. 31.	 Blakemore, C. L. 2003. Movement is essential to learning. Journal of Physical  Education, Recreation and Dance, 74, 2224, 41. 32.	 Jensen, E. 2000. Moving with the brain in mind. Educational Leadership, 583,  3437. 33.	 Blakemore, C. L. 2003. Movement is essential to learning. Journal of Physical  Education, Recreation and Dance, 74, 2224, 41. 34.	 Diamond, A. 2000. Close interrelation of motor development and cognitive  development of the cerebellum and prefrontal cortex. Child Development, 71,  4456.
+
+Endnotes    41 35.	 Jensen, E. 2000. Moving with the brain in mind. Educational Leadership,  583, 3437. 36.	 Jensen, E. 2000. Moving with the brain in mind. Educational Leadership,  583, 3437. 37.	 Ibid. 38.	 Ibid. 39.	 Cotman, C. W., and Engesser-Cesar, C. 2002. Exercise enhances and protects  brain function. Exercise and Sport Sciences Reviews, 302, 7579. 40.	 Hannaford, C. 1995. Smart moves: Why learning is not all in your head. Arlington, VA: Great Ocean Publishers. 41.	 Jensen, E. 2000. Moving with the brain in mind. Educational Leadership,  583, 3437. 42.	 Werner, P. 1999. The future of the integrated curriculum in physical education: Guarded optimism. Teaching Elementary Physical Education, November,  1113 43.	 Foley, M. 2009 Education has some new moves. Greenville News. 44.	 Dennison, P. E. 2006. Brain gym and me. Ventura, CA: Edu-Kinetics, Inc. 45.	 Stevens-Smith, D. A. 1999. Physical education in the classroom . . . youve got  to be kidding! Teaching Elementary Physical Education, January, 1820. 46.	 Werner, P., and Burton, E. 1979. Learning through movement. St. Louis, MO:  Mosby. 47.	 Reed, J. A. 2009. Active education: Lessons for integrating physical activity with  language arts, science and social studies. New York, NY: Nova Science Publishers,  Inc., 7. 48.	 Dennison, P. E. 2006. Brain gym and me. Ventura, CA: Edu-Kinetics, Inc. 49.	 Stevens-Smith, D. A. 1999. Physical education in the classroom . . . youve got  to be kidding! Teaching Elementary Physical Education, January, 1820. 50.	 Jarrett, O. S., Maxwell, D. M., Dickerson, C., Hoge, P., Davies, G., and Yetley, A.  1998. Impact of recess on classroom behavior: Group effects and individual  differences. The Journal of Educational Research, 92, 121126. 51.	 Reed, J. A. 2009. Active education: Lessons for integrating physical activity with  language arts, science and social studies. New York, NY: Nova Science Publishers,  Inc., ix. 52.	 Reed, J. A. 2009. Active education: Lessons for integrating physical activity with  language arts, science and social studies. New York, NY: Nova Science Publishers,  Inc., 8. 53.	 DeCecco, J. P. 1968. The psychology of learning and instruction. Engelwood  Cliffs, NJ: Prentice-Hall. 54.	 Teach.com. 2015. Learning styles. Retrieved from http:teach.comwhat teachers-teachlearning-styles 55.	 Ibid. 56.	 Gardner, H. 2015. Multiple intelligences. Retrieved from http:multiple  intelligencesoasis.org 57.	 Ibid. 58.	 Dunn, R., Beaudry, J. S., and Klavis, A. 1989. Survey of research on learning  styles. Educational Leadership, 166, 5058.
+Endnotes 59.	 Dunn, R.,  Dunn, K. 1975. Learning styles, teaching styles. National Association of Secondary School Principals Bulletin, 59, 3849. 60.	 Dennison, P. E. 2006. Brain gym and me. Ventura, CA: Edu-Kinetics, Inc. 61.	 Pettifor, B. 1999. Physical education methods for classroom teachers. Champaign,  IL: Human Kinetics. 62.	 Dennison, P. E. 2006. Brain gym and me. Ventura, CA: Edu-Kinetics, Inc. 63.	 Mohnsen, B. S. 1997. Teaching middle school physical education. Champaign,  IL: Human Kinetics. 64.	 Dennison, P. E. 2006. Brain gym and me. Ventura, CA: Edu-Kinetics, Inc.
+
+Activating the Modern Classroom, page 43 Copyright  2018 by Information Age Publishing All rights of reproduction in any form reserved.	 43 Acknowledgments S pecial thanks to the following contributors to the Creative Movement in  the Classroom and School section:
+
+Suzannah Evans, kindergarten teacher and former infant prekindergarten, PE, and special education teacher, Colorado
+
+Jennifer Stith, freelance writer and former Grades 14 and  special education teacher, North Carolina
+
+Kelly Gunzenhauser, prekindergarten teacher and freelance  writer, North Carolina
+
+Jennifer Geck, freelance writer and former first grade teacher,  North Carolina
+
+Jennifer Shriver, first grade teacher, South Carolina
