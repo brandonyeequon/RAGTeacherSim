@@ -4,6 +4,7 @@ import json
 import openai
 import faiss
 import numpy as np
+from huggingface_hub import hf_hub_download
 
 # Set OpenAI API key from environment or fallback
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -12,6 +13,42 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"
 OPENAI_STUDENT_MODEL = "gpt-4o-mini"
 OPENAI_EXPERT_MODEL = "gpt-4o"
+HUGGINGFACE_REPO_ID = "brandonyeequon/teacher_faiss"
+HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN")
+HF_FAISS_INDEX_PATH = "vectorized_textbooks.faiss"
+HF_TEXTBOOK_PASSAGES_PATH = "textbook_passages.pkl"  
+
+try:
+    downloaded_path = hf_hub_download(
+        repo_id=HUGGINGFACE_REPO_ID,
+        filename=HF_TEXTBOOK_PASSAGES_PATH,
+        local_dir=".", # Directory to save the file
+        local_dir_use_symlinks=False, # Ensure the actual file is copied
+        token=HUGGINGFACE_TOKEN,
+        repo_type="dataset",
+        cache_dir=None # Avoid using HF cache, download directly
+
+    )
+    # hf_hub_download might place it in a subdirectory structure based on the filename
+except Exception as e:
+    print(f"Error downloading FAISS index: {e}")
+    raise
+
+try:
+    downloaded_path = hf_hub_download(
+        repo_id=HUGGINGFACE_REPO_ID,
+        filename=HF_FAISS_INDEX_PATH,        # Path within the repo
+        local_dir=".", # Directory to save the file
+        local_dir_use_symlinks=False, # Ensure the actual file is copied
+        token=HUGGINGFACE_TOKEN,
+        repo_type="dataset",
+        cache_dir=None # Avoid using HF cache, download directly
+
+    )
+    # hf_hub_download might place it in a subdirectory structure based on the filename
+except Exception as e:
+    print(f"Error downloading FAISS index: {e}")
+    raise
 
 # Load textbook context
 with open("textbook_passages.pkl", "rb") as f:
