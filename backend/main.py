@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from logic import generate_student_response, generate_expert_advice
+from .logic import generate_student_response, generate_expert_advice
 
 app = FastAPI()
 
