@@ -14,12 +14,12 @@ OPENAI_STUDENT_MODEL = "gpt-4o-mini"
 OPENAI_EXPERT_MODEL = "gpt-4o"
 
 # Load textbook context
-with open("..\\textbook_passages.pkl", "rb") as f:
+with open("textbook_passages.pkl", "rb") as f:
     textbook_passages = pickle.load(f)
-index = faiss.read_index("..\\vectorized_textbooks.faiss")
+index = faiss.read_index("vectorized_textbooks.faiss")
 
 # Load scenarios
-with open("..\\data/scenarios.json") as f:
+with open("data/scenarios.json") as f:
     scenario_data = json.load(f)
 scenarios_dict = {s["scenario_id"]: s for s in scenario_data}
 
