@@ -143,8 +143,7 @@ with st.sidebar:
             "chat_history": st.session_state.chat_history,
             "scenario_id": st.session_state.current_scenario["scenario_id"]
             })
-            print(expert_response.json())
-            st.session_state.expert_advice = expert_response.json()["response"]
+            expert_response = expert_response.json()["response"]
 
             # Add expert response to chat history
             st.session_state.expert_chat_history.append({"role": "assistant", "content": expert_response})
@@ -263,20 +262,12 @@ if st.session_state.current_scenario:
         # Add user message to chat history
         st.session_state.chat_history.append({"role": "user", "content": prompt})
 
-        # Generate student response without spinner (UI reflects this)
-        # student_reply = generate_student_response(
-        #     prompt,
-        #     st.session_state.chat_history,
-        #     st.session_state.current_scenario["scenario_id"]
-        # )
-
         student_reply = requests.post(f"{API_URL}/student-response", json={
         "user_input": prompt,
         "chat_history": st.session_state.chat_history,
         "scenario_id": st.session_state.current_scenario["scenario_id"]
         })
         student_reply = student_reply.json()["response"]
-        print(st.session_state.current_scenario)
 
         # Add student response to chat history
         st.session_state.chat_history.append({"role": "assistant", "content": student_reply})
