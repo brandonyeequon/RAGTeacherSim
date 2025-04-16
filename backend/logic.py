@@ -204,9 +204,9 @@ Evaluate the effectiveness of this teacher-student interaction:
 
 {transcript}
 
-Respond with:
+Respond with a valid JSON object only — no explanation, no markdown, and no code block formatting the JSON object should contain:
 1. A score from 1 to 10 based on how well the teacher resolved the student's issue based on the best teaching practices.
-2. A brief list of positive things the teacher did.
+2. A brief list of positive things the teacher did, This should be returned in a comma delinated string.
 3. Advice for improvement.
 
 Format your response as JSON with keys: "score", "feedback", and "advice".

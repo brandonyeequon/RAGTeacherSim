@@ -6,7 +6,8 @@ import os
 
 
 # --- Constants and Configuration ---
-API_URL = "https://ragteachersim-production.up.railway.app"
+API_URL = "https://ragteachersim-production.up.railway.app" # Production URL
+# API_URL = "http://127.0.0.1:8000"   # Local URL for testing
 
 
 LOCAL_DATA_DIR = "..\\data" # Subdirectory for JSON files
@@ -324,17 +325,6 @@ if st.session_state.current_scenario:
                 st.button("End Scenario", key="end_chat_button", on_click=end_scenario, use_container_width=True)
 
 
-def generate_assessment(chat_history):
-    # For the sake of this example, we'll randomly generate a score, feedback, and advice
-    score = random.randint(5, 10)  # Replace with actual model score
-    score_description = f"Score: {score}/10 - Your interaction was {score * 10}% effective."
-    
-    # AI feedback and advice
-    feedback = f"Your conversation was well-structured and on-topic." if score > 5 else f"Try to engage the student more actively."
-    advice = f"Consider asking more open-ended questions to encourage student participation." if score < 5 else f"Great job! Keep the conversation flowing naturally."
-    
-    return score_description, feedback, advice
-
 # Initializing session state if not present
 if 'scenario_ended' not in st.session_state:
     st.session_state.scenario_ended = False
@@ -347,12 +337,17 @@ if 'scenario_ended' not in st.session_state:
 if st.session_state.scenario_ended and not st.session_state.evaluation_submitted:
     st.title("Scenario Evaluation")
 
-    # Simulate an AI evaluation of the chat history
-    score_description, feedback, advice = generate_assessment(st.session_state.chat_history)
+    evaluation = requests.post(f"{API_URL}/evaluate-teacher", json={
+    "chat_history": st.session_state.chat_history
+    })
+    
+    score = evaluation.json()["score"]
+    feedback = evaluation.json()["feedback"]
+    advice = evaluation.json()["advice"]
     
     # Show the evaluation to the user
     st.subheader("Your Score")
-    st.write(score_description)
+    st.write(score)
     
     st.subheader("Feedback")
     st.write(feedback)
