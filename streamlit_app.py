@@ -772,7 +772,7 @@ footer_html = """
     bottom: 0;
     left: 0;
     right: 0;
-    padding: 5px 20px;
+    padding: 5px 175px;
     box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
     z-index: 999;
     display: flex;

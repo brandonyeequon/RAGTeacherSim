@@ -1,98 +1,68 @@
-### BackEnd API Contract Documentation
+# Final Project
+## Project Summary
+Our project was created to provide an immersive chatbot that simulates a second grader for UVU students in the education program. This chatbot was developed at the request of the professors in the UVU education department to help their students practice handling real-life classroom challenges. Users can practice specific scenarios and techniques by selecting from our list of scenarios. If a user ever feels stuck during a scenario, they can get help from the expert teacher chat we have provided. After ending a scenario, users are provided feedback on how they dealt with the situation.
 
-#### POST `/student-response`
-- **Description**: Generates a simulated student response based on teacher input and prior chat history.
-- **Request Body**:
-```json
-{
-  "user_input": "string",
-  "chat_history": [
-    {"role": "user", "content": "string"},
-    {"role": "assistant", "content": "string"}
-  ]
-}
+## Team Contributions
+Andrew Buckland(Documentation Specialist/QA): Helped with initial data collection, created readme files for submissions, commented code, quality testing on chatbot(regular use and stress testing), created help section for chatbot, and created walkthrough for one of our milestones.  
+
+Brandon Lee(Product Owner):  
+
+Cade Anderson(Data Engineer):  
+
+Collin Anderson(UI/UX Developer):  
+
+Kate Bennett(Project Manager):  
+
+Porter Nelson(AI Developer):  
+
+## Technical Overview
+
+This project leverages a variety of tools, frameworks, and APIs to create an interactive teaching simulation application:
+
+#### Tools and Frameworks
+- **Streamlit**: Used for building the web-based user interface.
+- **FAISS**: Utilized for efficient similarity search and clustering of vector embeddings.
+- **NumPy**: For numerical operations and handling embeddings.
+- **Hugging Face Hub**: For downloading and managing datasets and models.
+
+#### Models
+- **OpenAI GPT Models**: 
+  - `text-embedding-3-small`: Used for generating vector embeddings of text.
+  - `gpt-4o-mini` and `gpt-4o`: Used for generating student responses and expert advice.
+
+#### APIs
+- **OpenAI API**: For accessing GPT models to generate embeddings and chat completions.
+- **Hugging Face API**: For downloading required files such as FAISS indices and textbook passages.
+
+#### Additional Libraries
+- **Requests**: For making HTTP requests.
+- **Pickle**: For loading and saving serialized data files.
+- **JSON**: For handling configuration and scenario data.
+
+This combination of tools and technologies enables the simulation of classroom interactions and the provision of expert teaching advice.
+
+## Instructions to use our app
+#### Use our website
+1. **Open your browser**
+2. **Go to our website**
 ```
-- **Response**:
-```json
-{
-  "response": "string"
-}
+https://teachersimulation.streamlit.app
 ```
 
----
-
-#### POST `/expert-advice`
-- **Description**: Returns advice from an expert teacher based on a question and the current conversation history.
-- **Request Body**:
-```json
-{
-  "question": "string",
-  "conversation_history": [
-    {"role": "user", "content": "string"},
-    {"role": "assistant", "content": "string"}
-  ]
-}
-```
-- **Response**:
-```json
-{
-  "response": "string"
-}
-```
-
----
-
-### 🚀 Backend Startup Instructions
+#### Local Startup Instructions **OPENAI AND HUGGINGFACE KEYS NEEDED**
 
 1. **Install dependencies**:
 ```bash
-pip install fastapi uvicorn sentence-transformers faiss-cpu ollama
+pip install -r requirements.txt
+```
+2. **Create .streamlit directory in the project directory**
+3. **Create a secrets.toml file inside of the .streamlit directory** Insert this into your secrets.toml file
+```
+HUGGINGFACE_TOKEN = "YOUR KEY HERE"
+OPENAI_API_KEY = "YOUR KEY HERE"
 ```
 
-2. **Start the backend server**:
+4. **Run the Streamlit frontend**:
 ```bash
-uvicorn backend.main:app --reload
+streamlit run streamlit_app.py
 ```
-- Runs at: http://localhost:8000
-- Docs available at: http://localhost:8000/docs
-
----
-
-### 🎨 Frontend Startup Instructions
-
-1. **Install dependencies**:
-```bash
-pip install streamlit requests
-```
-
-2. **Run the Streamlit frontend**:
-```bash
-streamlit run ui/streamlit_app.py
-```
-
----
-
-### User Interface Instructions
-- **Start the chatbot**: When you start the app you will see this screen. Click the **Select a scenario...** dropdown and select a desired scenario to begin interacting with the second-grader chatbot.  
-![Image of the app after it's started.](/Images/start.png)
-- **Scenario Description**: After selecting your desired scenario a description of the scenario will appear. Read through the description and decide how you would like to interact with the chatbot.
-![Image of the scenario description.](/Images/scenario%20description.png)
-- **Interact with the chatbot**: You can now interact with the chatbot by clicking into the Message the student... box and typing out your message. To send the message, press enter on your keyboard or click the send message arrow on the right side of the box.
-![Image of using the message function.](/Images/message%20chatbot.png)
-- **Open Expert Teacher Advisor Chat**: If you would like advice on the student interaction, click the arrow on the top left of the screen to open the Expert Teacher Chatbot. Ask any questions you have, and it will provide adviced based on various teaching textbooks.
-![Image of button to click for expert teacher sidebar.](/Images/expert%20sidebar.png)
-- **Ask the Expert a Question**: With the Expert Teacher Advisor open you can ask a question by clicking into the **Ask for teaching advice:** box, typing your message and pressing enter on your keyboard or the **Ask** button.
-![Image of the expert teacher sidebar.](/Images/expert%20chat.png)
-- **Access Settings**: To access appearance settings, click the 3 dots in the top right.
-![Image showing where the three dots are.](/Images/settings.png)
-- **Access Settings**: Click on the settings button.
-![Image showing where the settings button is.](/Images/settings2.png)
-- **Appearance Settings**: You may now put the screen in wide mode, change to a preset theme, or create your own custom theme. 
-![Image showing the settings window.](/Images/settings3.png)
-- **Custom Theme**: You can change the colors of the screen and use a different font family. 
-![Image showing the custom theme page.](/Images/settings4.png)
-- **Preset Theme**: You can select the light theme, dark theme, or have the theme reflect your system settings.
-![Image showing the use of the theme dropdown.](/Images/settings5.png)
-- **Example of light theme and wide mode**
-![Image of light theme and wide mode.](/Images/settings6.png)
-- **Continue Chatting**: Continue using our chatbots as you would like!
