@@ -571,7 +571,7 @@ with st.sidebar:
         <style>
         .expert-help-box {
             background-color: #2D3E34;
-            color: white;
+            color: white !important;
             padding: 12px 18px;
             border-radius: 8px;
             font-weight: bold;
