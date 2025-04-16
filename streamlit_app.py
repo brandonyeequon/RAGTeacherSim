@@ -565,24 +565,26 @@ with st.sidebar:
     else:
         st.markdown("""
         <div class="expert-help-box">
-            💡 Ask for advice here once a teaching scenario has been selected from the main chat
+            💡 <span class="expert-help-text">Ask for advice here once a teaching scenario has been selected from the main chat</span>
         </div>
 
         <style>
-        .expert-help-box {
-            background-color: #2D3E34;
-            color: white !important;
+        div.expert-help-box {
+            background-color: #2D3E34 !important;
             padding: 12px 18px;
             border-radius: 8px;
             font-weight: bold;
             margin-bottom: 10px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
+
+        .expert-help-text {
+            color: white !important;
+        }
         </style>
         """, unsafe_allow_html=True)
-
+        
 # --- Main Panel --- (Original version from first prompt)
-
 st.markdown(
     """
     <style>
