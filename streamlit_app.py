@@ -10,11 +10,12 @@ from typing import Optional, List
 # import tempfile # No longer needed
 import requests
 from huggingface_hub import hf_hub_download, snapshot_download
+import random # For testing the evaluation, can be removed later
 
 # --- Configuration & Initialization ---
 
 # Set page config first - Must be the first Streamlit command
-st.set_page_config(page_title="AcademIQ AI", layout="wide", page_icon="👩‍🏫")
+st.set_page_config(page_title="AcademiQ AI", layout="wide", page_icon="🎓")
 
 # --- Constants and Configuration ---
 # Hugging Face dataset info
@@ -462,7 +463,7 @@ def generate_expert_advice(question: str, conversation_history: list[dict], scen
 
 # --- Streamlit UI ---
 
-# Apply custom styling (Original version from first prompt)
+# Apply custom styling (Updated UI with image)
 st.markdown(
     """
     <style>
@@ -507,20 +508,32 @@ st.markdown(
 )
 
 st.markdown(
-    "<h2 style='text-align: center; margin-bottom: 1.5rem;'>AcademIQ AI</h2>", unsafe_allow_html=True
+    """
+    <style>
+    .stSidebar {
+        background-color: #2d3e34;
+        padding: 10px;
+        border-radius: 4px;
+    }
+    .stSidebarHeader, .stSidebar .stTextInput input, .stSidebar .stButton, .stSidebar .stMarkdown {color: white }
+    .st-emotion-cache-1mw54nq.egexzqm0 {color: white}
+    .st-emotion-cache-fsammq.egexzqm0 {color: white}
+    </style>
+    """, unsafe_allow_html=True
 )
 
 # --- Sidebar for Expert Advisor --- (Original version from first prompt)
 with st.sidebar:
-    st.markdown("<h1>Expert Teacher Advisor</h1>", unsafe_allow_html=True)
-    st.markdown("Ask for advice on how to handle the current teaching scenario.")
+    st.markdown(
+    "<h1 style='text-align: left; '>Expert Teacher</h1>", unsafe_allow_html=True
+)
 
     # Only show expert chat if scenario is selected
     if st.session_state.current_scenario:
         # Only show scrollable container after first message has been sent
         if st.session_state.expert_first_message_sent and st.session_state.expert_chat_history:
             # Create a scrollable container for expert chat messages
-            expert_chat_container = st.container(height=350, border=False)
+            expert_chat_container = st.container(height=700, border=False)
 
             # Display expert chat history in chronological order
             with expert_chat_container:
@@ -550,17 +563,30 @@ with st.sidebar:
             # Force a rerun to update the UI properly
             st.rerun()
     else:
-        st.info("Select a scenario from the main panel to enable the Expert Advisor.")
+        st.info("Ask for advice here once a teaching scenario has been selected from the main chat")
 
 
 # --- Main Panel --- (Original version from first prompt)
+
+st.markdown(
+    """
+    <style>
+    .stSelectbox > div > div > div { font-size: 20px }
+    .stSelectbox > div > div { height: 50px }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
+
 if not st.session_state.current_scenario:
-    st.info("Welcome! Please select a scenario below to begin the simulation.")
+    col1, col2, col3 = st.columns([1, 4, 1]) 
+    with col2:
+        st.image("assets/academiq_logo.png", use_container_width=True)
+
     st.write("""
-    This interactive tool helps elementary school teachers refine their skills by simulating real classroom interactions.
-    Interact with an AI student who behaves like a second-grader, responding to your teaching style.
-    Use the **Expert Teacher Advisor** panel on the left for real-time teaching strategies and best practices.
-    Practice navigating discussions, engaging students, and sharpening your approach in a risk-free environment.
+    Transform the way you prepare for the classroom with our AI-powered teaching assistant!
+    This interactive tool helps elementary school teachers refine their skills by simulating real classroom interactions. 
+    The AI behaves like a real second-grader, responding dynamically to your teaching style, questions, and guidance.
     """)
     st.write("")
 
@@ -606,7 +632,7 @@ if not st.session_state.current_scenario:
     scenario_options = ["Select a scenario..."] + sorted([s.get('title', f"Untitled Scenario ID: {s.get('scenario_id', 'Unknown')}") for s in scenario_menu])
 
     st.selectbox(
-        "Choose a Teaching Scenario:",
+        "",
         scenario_options,
         index=0, # Default to "Select a scenario..."
         key="scenario_selector",
@@ -617,6 +643,9 @@ if not st.session_state.current_scenario:
 
 # --- Scenario Active Area --- (Original version from first prompt)
 if st.session_state.current_scenario:
+    st.markdown(
+    "<h2 style='text-align: center; margin-bottom: 1.5rem;'>AcademiQ AI</h2>", unsafe_allow_html=True
+    ) 
     with st.expander("Current Scenario Details", expanded=True):
         scenario = st.session_state.current_scenario
         st.subheader(f"{scenario.get('title', 'Unnamed Scenario')}")
@@ -653,38 +682,206 @@ if st.session_state.current_scenario:
                     st.markdown(msg["content"])
 
     # Chat input area (always visible, but positioned differently based on whether first message sent)
-    if prompt := st.chat_input("Your message to the student...", key="student_chat_input_widget"):
-        # Add user message to chat history
-        st.session_state.chat_history.append({"role": "user", "content": prompt})
+    if not st.session_state.scenario_ended:
 
-        # Generate student response without spinner (UI reflects this)
-        student_reply = generate_student_response(
-            prompt,
-            st.session_state.chat_history,
-            st.session_state.current_scenario["scenario_id"]
-        )
+        if prompt := st.chat_input("Your message to the student...", key="student_chat_input_widget"):
+            # Add user message to chat history
+            st.session_state.chat_history.append({"role": "user", "content": prompt})
 
-        # Add student response to chat history
-        st.session_state.chat_history.append({"role": "assistant", "content": student_reply})
+            # Generate student response without spinner (UI reflects this)
+            student_reply = generate_student_response(
+                prompt,
+                st.session_state.chat_history,
+                st.session_state.current_scenario["scenario_id"]
+            )
 
-        # Mark first message as sent
-        st.session_state.first_message_sent = True
+            # Add student response to chat history
+            st.session_state.chat_history.append({"role": "assistant", "content": student_reply})
 
-        # Force a rerun to update the UI properly
-        st.rerun()
+            # Mark first message as sent
+            st.session_state.first_message_sent = True
 
-    # End scenario button (Original version)
-    cols = st.columns([3, 1])
-    with cols[1]:
-        def end_scenario():
-            st.session_state.current_scenario = None
-            st.session_state.chat_history = []
-            st.session_state.expert_chat_history = []
-            st.session_state.first_message_sent = False
-            st.session_state.expert_first_message_sent = False
-            print("Scenario ended by user.")
-            # No rerun needed here, state change handles it
-        st.button("End Scenario", key="end_chat_button", on_click=end_scenario, use_container_width=True)
+            # Force a rerun to update the UI properly
+            st.rerun()
+
+    # End scenario button (Updated version)
+    if not st.session_state.scenario_ended:
+        cols = st.columns([3, 1])
+        with cols[1]:
+            def end_scenario():
+                st.session_state.chat_history = []
+                st.session_state.expert_chat_history = []
+                st.session_state.scenario_ended = True
+                st.session_state.evaluation_submitted = False
+                print("Scenario ended by user.")
+                # No rerun needed here, state change handles it
+            st.button("End Scenario", key="end_chat_button", on_click=end_scenario, use_container_width=True)
 
 
-# No cleanup function needed as we are not using a temporary directory
+def generate_assessment(chat_history):
+    # For the sake of this example, we'll randomly generate a score, feedback, and advice
+    score = random.randint(5, 10)  # Replace with actual model score
+    score_description = f"Score: {score}/10 - Your interaction was {score * 10}% effective."
+    
+    # AI feedback and advice
+    feedback = f"Your conversation was well-structured and on-topic." if score > 5 else f"Try to engage the student more actively."
+    advice = f"Consider asking more open-ended questions to encourage student participation." if score < 5 else f"Great job! Keep the conversation flowing naturally."
+    
+    return score_description, feedback, advice
+
+# Initializing session state if not present
+if 'scenario_ended' not in st.session_state:
+    st.session_state.scenario_ended = False
+    st.session_state.chat_history = []
+    st.session_state.evaluation_submitted = False
+    st.session_state.first_message_sent = False
+    st.session_state.expert_first_message_sent = False
+    
+    
+if st.session_state.scenario_ended and not st.session_state.evaluation_submitted:
+    st.title("Scenario Evaluation")
+
+    # Simulate an AI evaluation of the chat history
+    score_description, feedback, advice = generate_assessment(st.session_state.chat_history)
+    
+    # Show the evaluation to the user
+    st.subheader("Your Score")
+    st.write(score_description)
+    
+    st.subheader("Feedback")
+    st.write(feedback)
+    
+    st.subheader("Advice for Improvement")
+    st.write(advice)
+    
+    # Button to go back to the chat and select a new scenario
+    if st.button("Close Evaluation"):
+        # Reset session state for a new scenario
+        st.session_state.current_scenario = None
+        st.session_state.first_message_sent = False
+        st.session_state.expert_first_message_sent = False
+        st.session_state.scenario_ended = False  
+        st.session_state.chat_history = []  
+        st.rerun()  # Refresh the app to show the chat interface again
+
+
+footer_html = """
+<style>
+.footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 5px 175px;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.1);
+    z-index: 999;
+    display: flex;
+    justify-content: flex-end;
+    background-color: var(--st-background-color);
+    color: var(--st-text-color);
+}
+
+.footer details summary {
+    list-style: none;
+}
+.footer details summary::-webkit-details-marker {
+    display: none;
+}
+.footer details summary {
+    cursor: pointer;
+    font-weight: bold;
+    padding: 3px;
+    color: inherit;
+    font-size: 14px;
+}
+
+.footer details[open] summary {
+    content: "Back";  /* Change the content to 'Back' when expanded */
+}
+
+/* Background for the expanded help content */
+.footer details[open] {
+    position: absolute;
+    bottom: 50px;  /* Reduced space from bottom */
+    right: 20px;  /* Reduced space from the right */
+    border-radius: 8px;
+    padding: 10px;  /* Reduced padding in the expanded content */
+    width: 300px;  /* Adjusted width for a more compact layout */
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: #f8f8f8;  /* Solid background color */
+    color: #333;  /* Text color for readability */
+}
+
+/* Light mode specific styling */
+body[data-theme="light"] .footer details[open] {
+    background-color: #ffffff;  /* Solid background in light mode */
+    color: #333;
+}
+
+/* Dark mode specific styling */
+body[data-theme="dark"] .footer details[open] {
+    background-color: #333;  /* Solid background in dark mode */
+.footer details[open] {
+    position: absolute;
+    bottom: 50px;
+    right: 20px;
+    border-radius: 8px;
+    padding: 10px;
+    width: 300px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    background-color: #f8f8f8;
+    color: #333;
+}
+
+body[data-theme="light"] .footer details[open] {
+    background-color: #ffffff;
+    color: #333;
+}
+
+body[data-theme="dark"] .footer details[open] {
+    background-color: #333;
+    color: #f0f2f6;
+}
+
+.footer details[open] p {
+    text-align: left;
+    margin: 5px 0;
+    color: inherit;
+}
+</style>
+
+<div class="footer">
+    <details>
+        <summary>❓ Help</summary>
+        <p>👩‍🏫 <b>Want to start the chat?</b> Pick a scenario from the "Select a scenario..." dropdown and begin chatting with the student.</p>
+        <p>💡 <b>Need expert advice?</b> The Teacher Expert panel on the left offers real-time strategies.</p>
+        <p>📈 <b>Get personalized feedback!</b> Your chats are evaluated to improve your teaching techniques. Click "end scenario" for feedback.</p>
+        <p>💬 <b>Want to start a new chat?</b> End the scenario and click the "Close Evaluation" button.</p>
+        <p>⚙️ <b>Want to change the look of the page?</b> Click the three dots in the top right corner than "Settings".</p>
+    </details>
+</div>
+
+<script>
+    // JavaScript to toggle the "Help" and "Back" text
+    document.querySelectorAll('.footer details').forEach((details) => {
+        details.addEventListener('toggle', () => {
+            const summary = details.querySelector('summary');
+            if (details.open) {
+                summary.innerHTML = "⬅️ Back";  // Change text to "Back" when expanded
+            } else {
+                summary.innerHTML = "❓ Help";  // Change text back to "Help" when collapsed
+    document.querySelectorAll('.footer details').forEach((details) => {
+        // Change summary text when toggled
+        details.addEventListener('toggle', () => {
+            const summary = details.querySelector('summary');
+            if (details.open) {
+                summary.innerHTML = "⬅️ Back";
+            } else {
+                summary.innerHTML = "❓ Help";
+            }
+        });
+    });
+</script>
+"""
+
+st.markdown(footer_html, unsafe_allow_html=True)
