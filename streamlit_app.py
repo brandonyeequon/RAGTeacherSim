@@ -563,11 +563,28 @@ with st.sidebar:
             # Force a rerun to update the UI properly
             st.rerun()
     else:
-        st.info("Ask for advice here once a teaching scenario has been selected from the main chat")
+        st.markdown("""
+        <div class="expert-help-box">
+            💡 <span class="expert-help-text">Ask for advice here once a teaching scenario has been selected from the main chat</span>
+        </div>
 
+        <style>
+        div.expert-help-box {
+            background-color: #2D3E34 !important;
+            padding: 12px 18px;
+            border-radius: 8px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
+        .expert-help-text {
+            color: white !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
 # --- Main Panel --- (Original version from first prompt)
-
 st.markdown(
     """
     <style>
@@ -777,8 +794,17 @@ footer_html = """
     z-index: 999;
     display: flex;
     justify-content: flex-end;
-    background-color: var(--st-background-color);
     color: var(--st-text-color);
+}
+
+/* Light mode footer background */
+body[data-theme="light"] .footer {
+    background-color: #ffffff;
+}
+
+/* Dark mode footer background */
+body[data-theme="dark"] .footer {
+    background-color: #1e1e1e;
 }
 
 .footer details summary {
@@ -796,31 +822,10 @@ footer_html = """
 }
 
 .footer details[open] summary {
-    content: "Back";  /* Change the content to 'Back' when expanded */
+    content: "Back";
 }
 
 /* Background for the expanded help content */
-.footer details[open] {
-    position: absolute;
-    bottom: 50px;  /* Reduced space from bottom */
-    right: 20px;  /* Reduced space from the right */
-    border-radius: 8px;
-    padding: 10px;  /* Reduced padding in the expanded content */
-    width: 300px;  /* Adjusted width for a more compact layout */
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    background-color: #f8f8f8;  /* Solid background color */
-    color: #333;  /* Text color for readability */
-}
-
-/* Light mode specific styling */
-body[data-theme="light"] .footer details[open] {
-    background-color: #ffffff;  /* Solid background in light mode */
-    color: #333;
-}
-
-/* Dark mode specific styling */
-body[data-theme="dark"] .footer details[open] {
-    background-color: #333;  /* Solid background in dark mode */
 .footer details[open] {
     position: absolute;
     bottom: 50px;
@@ -857,28 +862,15 @@ body[data-theme="dark"] .footer details[open] {
         <p>💡 <b>Need expert advice?</b> The Teacher Expert panel on the left offers real-time strategies.</p>
         <p>📈 <b>Get personalized feedback!</b> Your chats are evaluated to improve your teaching techniques. Click "end scenario" for feedback.</p>
         <p>💬 <b>Want to start a new chat?</b> End the scenario and click the "Close Evaluation" button.</p>
-        <p>⚙️ <b>Want to change the look of the page?</b> Click the three dots in the top right corner than "Settings".</p>
+        <p>⚙️ <b>Want to change the look of the page?</b> Click the three dots in the top right corner then "Settings".</p>
     </details>
 </div>
 
 <script>
-    // JavaScript to toggle the "Help" and "Back" text
     document.querySelectorAll('.footer details').forEach((details) => {
         details.addEventListener('toggle', () => {
             const summary = details.querySelector('summary');
-            if (details.open) {
-                summary.innerHTML = "⬅️ Back";  // Change text to "Back" when expanded
-            } else {
-                summary.innerHTML = "❓ Help";  // Change text back to "Help" when collapsed
-    document.querySelectorAll('.footer details').forEach((details) => {
-        // Change summary text when toggled
-        details.addEventListener('toggle', () => {
-            const summary = details.querySelector('summary');
-            if (details.open) {
-                summary.innerHTML = "⬅️ Back";
-            } else {
-                summary.innerHTML = "❓ Help";
-            }
+            summary.innerHTML = details.open ? "⬅️ Back" : "❓ Help";
         });
     });
 </script>
