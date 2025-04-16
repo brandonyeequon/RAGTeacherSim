@@ -194,20 +194,36 @@ What should the teacher do next?
     )
     return response.choices[0].message.content.strip()
 
-def evaluate_teacher_effectiveness(chat_history: list) -> tuple:
+def evaluate_teacher_effectiveness(chat_history: list, scenario_id: str = None) -> tuple:
+
+    context = ""
+    if scenario_id and scenario_id in scenarios_dict:
+        s = scenarios_dict[scenario_id]
+        context += f"Scenario: {s.get('title', '')}\n{s.get('description', '')}\n"
+        if s.get("student_details"):
+            context += f"Student Details: {s['student_details']}\n"
+        if s.get("teacher_objective"):
+            context += f"Objective: {s['teacher_objective']}\n"
+
     transcript = "\n".join(
         f"Teacher: {m['content']}" if m["role"] == "user" else f"Student: {m['content']}"
         for m in chat_history
     )
     prompt = f"""
-Evaluate the effectiveness of this teacher-student interaction:
-
-{transcript}
+Evaluate the effectiveness of this teacher-student interaction in resolving the objective included in the context. Be harsh but fair.:
+Context: {context}
+Teacher-Student interaction: {transcript}
 
 Respond with a valid JSON object only — no explanation, no markdown, and no code block formatting the JSON object should contain:
-1. A score from 1 to 10 based on how well the teacher resolved the student's issue based on the best teaching practices.
+1. A score from 1 to 10 based on how well the teacher resolved the student's issue based on the Score Rubric.
 2. A brief list of positive things the teacher did, This should be returned in a comma delinated string.
 3. Advice for improvement.
+
+Score rubric:
+1-3: Objective was poorly achieved or the teacher used ineffective teaching strategies 
+4-6: The teacher attempted to use good teaching pratices but did not achieve the teaching objective 
+7-8: The teaching objective was mostly achieved and the teacher used good teaching practices
+9-10: The teaching objective was fully achieved and the teacher used excellent teaching practices
 
 Format your response as JSON with keys: "score", "feedback", and "advice".
 """

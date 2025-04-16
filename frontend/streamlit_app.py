@@ -10,13 +10,11 @@ API_URL = "https://ragteachersim-production.up.railway.app" # Production URL
 # API_URL = "http://127.0.0.1:8000"   # Local URL for testing
 
 
-LOCAL_DATA_DIR = "..\\data" # Subdirectory for JSON files
+LOCAL_DATA_DIR = os.path.join("..", "data") # Subdirectory for JSON files
 SCENARIO_MENU_PATH = os.path.join(LOCAL_DATA_DIR, "scenario_menu.json")
 SCENARIOS_DATA_PATH = os.path.join(LOCAL_DATA_DIR, "scenarios.json")
 
-st.set_page_config(page_title="AcademiQ", layout="wide")
-st.title("AcademiQ Teaching Companion")
-
+st.set_page_config(page_title="AcademiQ AI", layout="wide", page_icon="🎓")
 
 @st.cache_data # Cache scenario data
 def load_scenario_data():
@@ -336,9 +334,9 @@ if 'scenario_ended' not in st.session_state:
     
 if st.session_state.scenario_ended and not st.session_state.evaluation_submitted:
     st.title("Scenario Evaluation")
-
     evaluation = requests.post(f"{API_URL}/evaluate-teacher", json={
-    "chat_history": st.session_state.chat_history
+    "chat_history": st.session_state.chat_history,
+    "scenario_id": st.session_state.current_scenario["scenario_id"]
     })
     
     score = evaluation.json()["score"]

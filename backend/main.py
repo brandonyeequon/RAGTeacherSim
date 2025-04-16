@@ -16,7 +16,8 @@ class AdviceRequest(BaseModel):
 
 class EvaluationRequest(BaseModel):
     chat_history: list[dict]
-
+    scenario_id: str = None
+    
 @app.post("/student-response")
 def student_response(req: ChatRequest):
     response = generate_student_response(req.user_input, req.chat_history, req.scenario_id)
@@ -29,7 +30,7 @@ def expert_advice(req: AdviceRequest):
 
 @app.post("/evaluate-teacher")
 def evaluate_teacher(req: EvaluationRequest):
-    score, feedback, advice = evaluate_teacher_effectiveness(req.chat_history)
+    score, feedback, advice = evaluate_teacher_effectiveness(req.chat_history, req.scenario_id)
     return {
         "score": score,
         "feedback": feedback,
