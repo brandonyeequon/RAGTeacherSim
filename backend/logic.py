@@ -146,3 +146,91 @@ What should the teacher do next?
         max_tokens=400
     )
     return response.choices[0].message.content.strip()
+
+def generate_expert_advice(question: str, chat_history: list, scenario_id: str = None) -> str:
+    transcript = "\n".join(
+        f"Teacher (User): {m['content']}" if m["role"] == "user" else f"Student (Assistant): {m['content']}"
+        for m in chat_history
+    )
+    context = ""
+    retrieval_query = question
+    if scenario_id and scenario_id in scenarios_dict:
+        s = scenarios_dict[scenario_id]
+        context += f"Scenario: {s.get('title', '')}\n{s.get('description', '')}\n"
+        retrieval_query += " " + s.get("title", "") + " " + s.get("description", "")
+        if s.get("student_details"):
+            context += f"Student Details: {s['student_details']}\n"
+            retrieval_query += " " + s["student_details"]
+        if s.get("classroom_situation"):
+            context += f"Situation: {s['classroom_situation']}\n"
+            retrieval_query += " " + s["classroom_situation"]
+        if s.get("teacher_objective"):
+            context += f"Objective: {s['teacher_objective']}\n"
+
+    passages = retrieve_textbook_context(retrieval_query)
+    passages_text = "\n".join(f"- {p}" for p in passages)
+
+    prompt = f"""
+{context}
+Teacher's Question: {question}
+
+Conversation:
+{transcript}
+
+Teaching Principles:
+{passages_text}
+
+What should the teacher do next?
+"""
+    messages = [
+        {"role": "system", "content": "You are a helpful expert in teaching strategy for 2nd grade."},
+        {"role": "user", "content": prompt}
+    ]
+    response = openai.chat.completions.create(
+        model=OPENAI_EXPERT_MODEL,
+        messages=messages,
+        temperature=0.5,
+        max_tokens=400
+    )
+    return response.choices[0].message.content.strip()
+
+def evaluate_teacher_effectiveness(chat_history: list) -> tuple:
+    transcript = "\n".join(
+        f"Teacher: {m['content']}" if m["role"] == "user" else f"Student: {m['content']}"
+        for m in chat_history
+    )
+    prompt = f"""
+Evaluate the effectiveness of this teacher-student interaction:
+
+{transcript}
+
+Respond with:
+1. A score from 1 to 10 based on how well the teacher resolved the student's issue based on the best teaching practices.
+2. A brief list of positive things the teacher did.
+3. Advice for improvement.
+
+Format your response as JSON with keys: "score", "feedback", and "advice".
+"""
+    messages = [
+        {"role": "system", "content": "You are a teaching evaluator for elementary school simulations."},
+        {"role": "user", "content": prompt}
+    ]
+    response = openai.chat.completions.create(
+        model=OPENAI_EXPERT_MODEL,
+        messages=messages,
+        temperature=0.5,
+        max_tokens=400
+    )
+
+    try:
+        result = json.loads(response.choices[0].message.content)
+        score = result.get("score", 5)
+        feedback = result.get("feedback", "No feedback provided.")
+        advice = result.get("advice", "No advice provided.")
+    except Exception as e:
+        print(f"Failed to parse evaluation response: {e}")
+        score = 5
+        feedback = "Unable to evaluate conversation."
+        advice = "Make sure to engage clearly and follow through on the student's confusion."
+
+    return score, feedback, advice

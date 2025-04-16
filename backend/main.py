@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
-from .logic import generate_student_response, generate_expert_advice
+from .logic import generate_student_response, generate_expert_advice, evaluate_teacher_effectiveness
 
 app = FastAPI()
 
@@ -27,7 +27,11 @@ def expert_advice(req: AdviceRequest):
     response = generate_expert_advice(req.question, req.chat_history, req.scenario_id)
     return {"response": response}
 
-# @app.post("/evaluate-teacher")
-# def evaluate_teacher(req: EvaluationRequest):
-#     response = evaluate_teacher_effectiveness(req.chat_history)
-#     return {"evaluation": response}
+@app.post("/evaluate-teacher")
+def evaluate_teacher(req: EvaluationRequest):
+    score, feedback, advice = evaluate_teacher_effectiveness(req.chat_history)
+    return {
+        "score": score,
+        "feedback": feedback,
+        "advice": advice
+    }
