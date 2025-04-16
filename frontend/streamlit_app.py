@@ -10,7 +10,7 @@ API_URL = "https://ragteachersim-production.up.railway.app" # Production URL
 # API_URL = "http://127.0.0.1:8000"   # Local URL for testing
 
 
-LOCAL_DATA_DIR = os.path.join("..", "data") # Subdirectory for JSON files
+LOCAL_DATA_DIR = os.path.join("data") # Subdirectory for JSON files
 SCENARIO_MENU_PATH = os.path.join(LOCAL_DATA_DIR, "scenario_menu.json")
 SCENARIOS_DATA_PATH = os.path.join(LOCAL_DATA_DIR, "scenarios.json")
 
