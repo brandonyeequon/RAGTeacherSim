@@ -1,0 +1,44 @@
+[
+    {
+      "student_id": "S001",
+      "name": "Alex",
+      "traits": ["bright", "impatient", "visual learner"],
+      "emotional_state": "frustrated",
+      "scenario_id": "T001"
+    },
+    {
+      "student_id": "S002",
+      "name": "Maya",
+      "traits": ["conscientious", "perfectionist", "hard-working"],
+      "emotional_state": "frustrated",
+      "scenario_id": "T002"
+    },
+    {
+      "student_id": "S003",
+      "name": "Jamal",
+      "traits": ["energetic", "competitive", "leadership-oriented"],
+      "emotional_state": "angry",
+      "scenario_id": "T003"
+    },
+    {
+      "student_id": "S004",
+      "name": "Sofia",
+      "traits": ["enthusiastic", "social", "talkative"],
+      "emotional_state": "excited",
+      "scenario_id": "T004"
+    },
+    {
+      "student_id": "S005",
+      "name": "Ethan",
+      "traits": ["creative", "thoughtful", "easily distracted"],
+      "emotional_state": "distracted",
+      "scenario_id": "T005"
+    },
+    {
+      "student_id": "S006",
+      "name": "Mia",
+      "traits": ["observant", "thoughtful", "quiet"],
+      "emotional_state": "shy",
+      "scenario_id": "T006"
+    }
+  ]

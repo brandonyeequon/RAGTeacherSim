@@ -1,0 +1,77 @@
+[
+    {
+      "scenario_id": "T001",
+      "type": "Teaching Concept",
+      "title": "Teaching Addition with Regrouping",
+      "description": "Teach a student addition with regrouping. Student is confused about place value. Keep the class engaged.",
+      "student_name": "Alex",
+      "student_details": "Alex is a bright but sometimes impatient 7-year-old. They learn best with visual aids and hands-on activities. Recently struggled with math concepts that require multiple steps.",
+      "classroom_situation": "It's Tuesday morning math period. The class has been working on addition, but regrouping (carrying the 1) is a new concept introduced yesterday. Alex is becoming visibly frustrated while trying to solve problems like 27+15 on the worksheet.",
+      "teacher_objective": "Help Alex understand the concept of regrouping in addition, using concrete examples and visual aids. Ensure Alex can successfully complete at least 3 problems independently by the end of the session. Maintain the engagement of other students who may be at different levels of understanding."
+    },
+    {
+      "scenario_id": "T002",
+      "type": "Student Emotion",
+      "emotion": "Frustration",
+      "title": "Handle a Frustrated Student",
+      "description": "Help a student who's upset they can't finish a worksheet correctly. Calm them and help them complete it.",
+      "student_name": "Maya",
+      "student_details": "Maya is typically a conscientious student who takes pride in her work. She has high expectations for herself and becomes easily frustrated when she can't get something right on the first try.",
+      "classroom_situation": "It's Thursday afternoon, the last period of the day. Students are working on a science worksheet about the water cycle. Maya has been staring at the same question for 10 minutes and is now crumpling her paper. A few tears are forming in her eyes.",
+      "teacher_objective": "Calm Maya down and help her work through her frustration. Guide her through the worksheet without simply giving her the answers. Help Maya develop better coping strategies for when she encounters challenging work. Complete the worksheet before the end of class."
+    },
+    {
+      "scenario_id": "T003",
+      "type": "Student Emotion",
+      "emotion": "Anger",
+      "title": "Handle an Angry Student",
+      "description": "Student is angry after losing a game at recess. Refuses to participate in class. Help them calm down and rejoin.",
+      "student_name": "Jamal",
+      "student_details": "Jamal is energetic and competitive. He excels in sports and enjoys being a leader among his peers. He struggles with emotional regulation when things don't go his way.",
+      "classroom_situation": "It's Monday after lunch recess. Jamal's team lost a close soccer game, and he feels it was unfair. He stormed into class, kicked his backpack under his desk, and now sits with arms crossed, refusing to take out his materials for the history lesson about Native American cultures.",
+      "teacher_objective": "Help Jamal process his anger appropriately and redirect his energy toward the lesson. Teach him strategies to handle disappointment. Successfully transition him into participating in at least the group activity portion of the lesson without disrupting other students' learning."
+    },
+    {
+      "scenario_id": "T004",
+      "type": "Student Emotion",
+      "emotion": "Excitement",
+      "title": "Manage an Excited Student",
+      "description": "Student is overly excited about a field trip and can't focus. Acknowledge their excitement, but help them refocus.",
+      "student_name": "Sofia",
+      "student_details": "Sofia is enthusiastic and social. She loves sharing ideas and experiences with the class. She sometimes struggles to regulate her excitement and can become disruptive when overstimulated.",
+      "classroom_situation": "It's Friday morning. The class will be going on a field trip to the zoo after lunch, but there's still a morning of lessons to get through. Sofia can't stop talking about the zoo animals, bouncing in her seat, and distracting her tablemates during the literacy lesson.",
+      "teacher_objective": "Acknowledge Sofia's excitement while channeling it productively into the morning's activities. Help her develop self-regulation skills. Ensure the literacy lesson goals are met while maintaining a positive atmosphere that doesn't squash Sofia's enthusiasm for the upcoming field trip."
+    },
+    {
+      "scenario_id": "T005",
+      "type": "Student Emotion",
+      "emotion": "Distracted",
+      "title": "Refocus a Distracted Student",
+      "description": "Student is looking out the window and not working. Gently guide them back to the task.",
+      "student_name": "Ethan",
+      "student_details": "Ethan is creative and thoughtful. He enjoys art and storytelling but often gets lost in his own thoughts. He struggles with transitions and staying on task during individual work time.",
+      "classroom_situation": "It's Wednesday morning during independent reading time. Outside, the maintenance crew is using a leaf blower in the courtyard. Ethan has been staring out the window for the past 15 minutes, his book untouched on his desk. The class will have a comprehension discussion soon, and Ethan hasn't started reading.",
+      "teacher_objective": "Redirect Ethan's attention to his reading assignment without embarrassing him. Help him develop strategies for maintaining focus despite distractions. Ensure he has enough content read to participate in the upcoming class discussion."
+    },
+    {
+      "scenario_id": "T006",
+      "type": "Student Emotion",
+      "emotion": "Shy",
+      "title": "Engage a Shy Student",
+      "description": "Shy student is hesitant to speak. Encourage them to share in a supportive way.",
+      "student_name": "Mia",
+      "student_details": "Mia is thoughtful and observant. She writes beautifully in her journal but rarely volunteers to speak in class. She prefers one-on-one interactions to group settings.",
+      "classroom_situation": "It's Thursday afternoon during a class discussion about the book the class has been reading. Mia has excellent insights in her reading journal, but hasn't spoken during the last three discussions. Today's theme about character motivation aligns perfectly with her journal notes, but she's looking down when you scan for volunteers.",
+      "teacher_objective": "Create a safe opportunity for Mia to share her ideas with the class. Build her confidence in speaking up without putting too much pressure on her. Help her feel valued for her contributions while respecting her comfort level."
+    },
+    {
+      "scenario_id": "T007",
+      "type": "Classroom Management",
+      "title": "Handle a Rowdy Classroom",
+      "description": "Students are loud and not paying attention after recess. Regain control and start the lesson.",
+      "student_name": "Whole Class",
+      "student_details": "Your class of 24 second-graders is generally well-behaved but can become rowdy after high-energy activities. They respond well to clear routines and engaging instruction.",
+      "classroom_situation": "It's a hot Friday afternoon right after recess. Students enter the classroom loudly, still discussing the exciting game of tag they were playing. Several students are out of their seats, a few are play-fighting in the corner, and most aren't responding to your usual attention signal. You need to start the science lesson on insects in the next two minutes to stay on schedule.",
+      "teacher_objective": "Quickly and effectively regain control of the classroom using positive management techniques. Successfully transition students from recess mode to learning mode. Begin the science lesson with students ready to engage with the material."
+    }
+  ]
