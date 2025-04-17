@@ -596,10 +596,20 @@ st.markdown(
 )
 
 if not st.session_state.current_scenario:
-    col1, col2, col3 = st.columns([1, 4, 1]) 
+    col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
-        st.image("assets/academiq_logo.png", use_container_width=True)
+        image_path = "assets/academiq_logo.png"  # Define path
+        image_width = 300  # Define desired width
 
+        # Use markdown with an HTML div styled for centering
+        st.markdown(
+            f"""
+            <div style="display: flex; justify-content: center;">
+                <img src="{image_path}" width="{image_width}">
+            </div>
+            """,
+            unsafe_allow_html=True,
+        )
     st.write("""
     Transform the way you prepare for the classroom with our AI-powered teaching assistant!
     This interactive tool helps elementary school teachers refine their skills by simulating real classroom interactions. 
