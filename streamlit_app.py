@@ -598,8 +598,9 @@ st.markdown(
 if not st.session_state.current_scenario:
     col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
+
         image_path = "assets/academiq_logo.png"  # Define path
-        image_width = 300  # Define desired width
+        image_width = 200  # Define desired width
 
         # Use markdown with an HTML div styled for centering
         st.markdown(
