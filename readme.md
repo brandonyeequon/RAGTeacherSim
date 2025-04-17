@@ -49,15 +49,14 @@ This project leverages a variety of tools, frameworks, and APIs to create an int
 This combination of tools and technologies enables the simulation of classroom interactions, the provision of expert teaching advice, and the evaluation of teaching effectiveness.
 
 ## Instructions to use our app
-#### Use our website (Not up to date).
+#### Use our website
 1. **Open your browser**
 2. **Go to our website**
 ```
-https://teachersimulation.streamlit.app
+https://teachertrainer.streamlit.app
 ```
 
-#### Local Startup Instructions (Up to date) **OPENAI AND HUGGINGFACE KEYS NEEDED**
-In Evaluation-Endpoint branch.  
+#### Local Startup Instructions **OPENAI AND HUGGINGFACE KEYS NEEDED**
 1. **Install dependencies**:
 ```bash
 pip install -r requirements.txt
@@ -73,7 +72,7 @@ OPENAI_API_KEY = "YOUR KEY HERE"
 uvicorn backend.main:app --reload
 ```
 
-5. **Run the Streamlit frontend** on line 13 you may need to change the ..\\ to ../:
+5. **Run the Streamlit frontend**:
 ```bash
 streamlit run streamlit_app.py
 ```
