@@ -16,7 +16,7 @@ import re # Import regex for parsing
 # --- Configuration & Initialization ---
 
 # Set page config first - Must be the first Streamlit command
-st.set_page_config(page_title="TeachCraft", layout="wide", page_icon="🎓")
+st.set_page_config(page_title="AcademIQ", layout="wide", page_icon="🎓") # Changed page title
 
 # --- Constants and Configuration ---
 # Hugging Face dataset info
@@ -562,19 +562,39 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-st.markdown(
+with st.sidebar:
+    st.markdown(
     """
     <style>
+    /* Base sidebar styling */
     .stSidebar {
         padding: 10px;
         border-radius: 4px;
     }
-    .stSidebarHeader, .stSidebar .stTextInput input, .stSidebar .stButton, .stSidebar .stMarkdown {color: white }
-    .st-emotion-cache-1mw54nq.egexzqm0 {color: white}
-    .st-emotion-cache-fsammq.egexzqm0 {color: white}
+    
+    /* Dark theme - white text */
+    body[data-theme="dark"] .stSidebarHeader, 
+    body[data-theme="dark"] .stSidebar .stTextInput input, 
+    body[data-theme="dark"] .stSidebar .stButton, 
+    body[data-theme="dark"] .stSidebar .stMarkdown,
+    body[data-theme="dark"] .st-emotion-cache-1mw54nq.egexzqm0,
+    body[data-theme="dark"] .st-emotion-cache-fsammq.egexzqm0 {
+        color: white !important;
+    }
+    
+    /* Light theme - dark text */
+    body[data-theme="light"] .stSidebarHeader, 
+    body[data-theme="light"] .stSidebar .stTextInput input, 
+    body[data-theme="light"] .stSidebar .stButton, 
+    body[data-theme="light"] .stSidebar .stMarkdown,
+    body[data-theme="light"] .st-emotion-cache-1mw54nq.egexzqm0,
+    body[data-theme="light"] .st-emotion-cache-fsammq.egexzqm0 {
+        color: #333333 !important;
+    }
     </style>
     """, unsafe_allow_html=True
-)
+    )
+
 
 with st.sidebar:
     st.markdown(
@@ -637,21 +657,21 @@ st.markdown(
 if not st.session_state.current_scenario and not st.session_state.scenario_ended:
     col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
-        st.markdown(
+        st.markdown( # Changed logo text and structure
             """
             <style>
-            .teachcraft-logo {
+            .academIQ-logo {
                 font-family: 'Playfair Display', serif;
                 font-size: 3.5rem;
                 text-align: center;
                 font-weight: bold;
                 margin: 20px 0;
             }
-            .teachcraft-logo .teach {
-                color: #2E8B57;
+            .academIQ-logo .iq-green { /* Changed class name */
+                color: #2E8B57; /* Green color */
             }
             </style>
-            <div class="teachcraft-logo"><span class="teach">Teach</span>Craft</div>
+            <div class="academIQ-logo">Academ<span class="iq-green">IQ</span></div>
             """,
             unsafe_allow_html=True
         )
@@ -715,19 +735,19 @@ if not st.session_state.current_scenario and not st.session_state.scenario_ended
 
 # --- Scenario Active Area ---
 elif st.session_state.current_scenario and not st.session_state.scenario_ended:
-    st.markdown(
+    st.markdown( # Changed logo text and structure
         """
         <style>
-        .teachcraft-logo {
+        .academIQ-logo {
             font-family: 'Playfair Display', serif;
             font-size: 3.5rem;
             text-align: center;
             font-weight: bold;
             margin: 20px 0 1.5rem 0;
         }
-        .teachcraft-logo .teach { color: #2E8B57; }
+        .academIQ-logo .iq-green { color: #2E8B57; } /* Changed class name */
         </style>
-        <div class="teachcraft-logo"><span class="teach">Teach</span>Craft</div>
+        <div class="academIQ-logo">Academ<span class="iq-green">IQ</span></div>
         """,
         unsafe_allow_html=True
     )
@@ -829,7 +849,7 @@ elif st.session_state.scenario_ended:
         st.session_state.expert_chat_history = []
         st.session_state.evaluation_results = None
         st.session_state.evaluation_submitted = False
-        st.rerun() 
+        st.rerun()
 
 # --- Footer ---
 footer_html = """
