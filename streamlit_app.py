@@ -36,8 +36,8 @@ HF_TEXTBOOK_PASSAGES_PATH = "textbook_passages.pkl"  # Relative path in the repo
 
 # Embedding and model configuration
 OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"
-OPENAI_STUDENT_MODEL = "gpt-4o-mini"
-OPENAI_EXPERT_MODEL = "gpt-4o" # Use the more powerful model for evaluation
+OPENAI_STUDENT_MODEL = "gpt-4.1-mini-2025-04-14"
+OPENAI_EXPERT_MODEL = "gpt-4.1-2025-04-14" # Use the more powerful model for evaluation
 
 # --- OpenAI API Key Setup ---
 try:
@@ -338,8 +338,8 @@ def generate_student_response(user_input: str, chat_history: list[dict], scenari
         stream = local_client.chat.completions.create(
             model=OPENAI_STUDENT_MODEL,
             messages=messages, # Pass the history as constructed
-            temperature=0.7,
-            max_tokens=600,
+            temperature=1.5,
+            max_tokens=800,
             stream=True, # Enable streaming
         )
         # Yield content chunks from the stream
@@ -409,7 +409,7 @@ def generate_expert_advice(question: str, conversation_history: list[dict], expe
         stream = local_client.chat.completions.create(
             model=OPENAI_EXPERT_MODEL,
             messages=messages,
-            temperature=0.9,
+            temperature=1,
             max_tokens=4000,
             stream=True # Enable streaming
         )
@@ -427,9 +427,10 @@ def generate_expert_advice(question: str, conversation_history: list[dict], expe
         traceback.print_exc()
         yield "An unexpected error occurred while generating advice." # Yield error message
 
-# --- IMPROVED EVALUATION FUNCTION WITH BETTER PARSING AND CONTEXT HANDLING ---
+# --- COMPREHENSIVE FAISS-POWERED EVALUATION FUNCTION ---
 def generate_ai_assessment(chat_history: List[Dict[str, str]], scenario: Optional[Dict] = None) -> Tuple[str, str, str, str]:
-    """Generates a performance evaluation using the OpenAI API (streaming internally) based on chat history and scenario."""
+    """Generates a performance evaluation using the OpenAI API based on chat history and scenario,
+    leveraging FAISS to find the most relevant UVU textbook passages for accurate assessment."""
     local_client = get_openai_client()
     if not local_client:
         return "Evaluation Unavailable", "Could not connect to the assessment AI.", "-", "-"
@@ -439,60 +440,161 @@ def generate_ai_assessment(chat_history: List[Dict[str, str]], scenario: Optiona
     
     # Format the conversation transcript with clear role indicators
     transcript = ""
+    teacher_messages = []
+    student_messages = []
+    
     for i, m in enumerate(chat_history):
         role = "Teacher" if m.get("role") == "user" else "Student"
         content = m.get("content", "").strip()
         if content:  # Only add if there's actual content
             transcript += f"{role}: {content}\n\n"
+            if role == "Teacher":
+                teacher_messages.append(content)
+            else:
+                student_messages.append(content)
     
-    # Build a more detailed scenario context
+    # Build a detailed scenario context for display and retrieval query building
     scenario_context = "No specific scenario context provided."
+    retrieval_query = "elementary education second grade teaching evaluation best practices"  # Base query
+    
     if scenario:
         scenario_context = f"Scenario Title: {scenario.get('title', 'N/A')}\n\n"
+        retrieval_query += f" {scenario.get('title', '')}"
+        
         if "description" in scenario and scenario["description"]:
             scenario_context += f"Description: {scenario['description']}\n\n"
+            retrieval_query += f" {scenario['description']}"
+            
         if "student_name" in scenario:
-            scenario_context += f"Student: {scenario['student_name']}"
+            student_info = f"Student: {scenario['student_name']}"
+            
             if scenario["student_name"] != "Whole Class" and "student_details" in scenario:
-                scenario_context += f" (Profile: {scenario['student_details']})"
-            scenario_context += "\n\n"
+                student_info += f" (Profile: {scenario['student_details']})"
+                retrieval_query += f" teaching strategies for {scenario['student_details']}"
+            
+            scenario_context += student_info + "\n\n"
+            
         if "teacher_objective" in scenario and scenario["teacher_objective"]:
             scenario_context += f"Teacher's Objective: {scenario['teacher_objective']}\n\n"
+            retrieval_query += f" how to achieve: {scenario['teacher_objective']}"
+            
         if "classroom_situation" in scenario and scenario["classroom_situation"]:
             scenario_context += f"Classroom Situation: {scenario['classroom_situation']}\n\n"
+            retrieval_query += f" strategies for: {scenario['classroom_situation']}"
     
-    # Use a very explicit system prompt with formatting requirements
-    system_prompt_content = """You are an expert educational assessor specializing in evaluating teacher-student interactions in elementary school (specifically 2nd grade, age 7-8).
+    # Enrich retrieval query with specific content from the conversation
+    if teacher_messages:
+        # Create a consolidated representation of the teacher's approach
+        teacher_approach = " ".join(teacher_messages)
+        # Extract key teaching patterns (questions, instructions, feedback)
+        retrieval_query += f" teaching techniques: {teacher_approach[:300]}"  # Limit length
+        
+        # Try to identify specific instructional strategies used
+        instructional_cues = ["explain", "describe", "tell me", "what if", "why do you think", 
+                             "how would you", "can you share", "let's try", "remember when", 
+                             "great job", "I like how you", "next time", "think about"]
+        
+        for cue in instructional_cues:
+            if cue in teacher_approach.lower():
+                retrieval_query += f" {cue} strategy"
+    
+    # Extract topics being discussed for more relevant textbook passages
+    all_content = " ".join(teacher_messages + student_messages)
+    topic_keywords = ["math", "reading", "writing", "science", "history", "art", 
+                     "feelings", "emotions", "behavior", "classroom", "rules",
+                     "addition", "subtraction", "spelling", "vocabulary", "story"]
+    
+    for keyword in topic_keywords:
+        if keyword in all_content.lower():
+            retrieval_query += f" {keyword} teaching second grade"
+    
+    # Craft the final query to focus on evaluation of the teaching approach
+    retrieval_query += " evaluating teaching effectiveness elementary education"
+    
+    print(f"Constructed evaluation retrieval query: {retrieval_query[:200]}...")
+    
+    # Retrieve more passages than default (increasing from 3 to 7 for more comprehensive context)
+    passages = retrieve_textbook_context(retrieval_query, top_k=7)
+    
+    # Process and organize passages for better context usage
+    if passages:
+        # Group passages by apparent topic/theme
+        teaching_principles = []
+        evaluation_criteria = []
+        specific_strategies = []
+        
+        for p in passages:
+            if "evaluat" in p.lower() or "assess" in p.lower() or "effective" in p.lower():
+                evaluation_criteria.append(p)
+            elif "strateg" in p.lower() or "technique" in p.lower() or "approach" in p.lower():
+                specific_strategies.append(p)
+            else:
+                teaching_principles.append(p)
+        
+        # Format passages with categorization for better prompt structure
+        passages_text = ""
+        
+        if evaluation_criteria:
+            passages_text += "EVALUATION CRITERIA FROM TEXTBOOKS:\n"
+            passages_text += "\n".join(f"- {p}" for p in evaluation_criteria) + "\n\n"
+            
+        if teaching_principles:
+            passages_text += "TEACHING PRINCIPLES FROM TEXTBOOKS:\n"
+            passages_text += "\n".join(f"- {p}" for p in teaching_principles) + "\n\n"
+            
+        if specific_strategies:
+            passages_text += "SPECIFIC TEACHING STRATEGIES FROM TEXTBOOKS:\n"
+            passages_text += "\n".join(f"- {p}" for p in specific_strategies)
+    else:
+        passages_text = "No specific teaching principles automatically retrieved for this query."
+    
+    print(f"Retrieved {len(passages)} passages from textbooks for evaluation")
+    
+    # Use a system prompt that emphasizes textbook principles and specific formatting
+    system_prompt_content = """You are an expert educational assessor specializing in evaluating teacher-student interactions in elementary education (specifically 2nd grade, age 7-8).
 
-Your task is to carefully analyze the ENTIRE conversation transcript between a teacher and a simulated student. Pay close attention to all exchanges and reference specific examples from the conversation in your evaluation.
+Your task is to analyze the provided conversation transcript between a teacher and a student, and evaluate it according to the UVU textbook principles and best practices provided.
 
-IMPORTANT: You MUST provide your evaluation in EXACTLY the following format using these EXACT headings:
+Follow these guidelines:
+1. Reference specific textbook principles in your evaluation
+2. Give concrete examples from the conversation that illustrate your points
+3. Compare the teacher's approach to the specific strategies mentioned in the textbook passages
+4. Evaluate how well the teacher achieved their objective as specified in the scenario
+5. Provide specific, actionable feedback based on the textbook principles
+
+VERY IMPORTANT: You MUST provide your evaluation in EXACTLY the following format using these EXACT headings:
 
 **Score:** [number] / 10
 
 **Rationale:**
-[Your explanation here]
+[Your explanation, referencing relevant textbook principles]
 
 **Strengths:**
-[List specific strengths with examples from the transcript]
+[List specific strengths with examples from the transcript, connecting to textbook principles]
 
 **Areas for Improvement:**
-[List specific actionable suggestions with examples from the transcript]
+[List specific actionable suggestions with examples from the transcript, connecting to textbook principles]
 
-Note: Please maintain this EXACT format with these EXACT headings to ensure your evaluation can be properly processed.
+Note: Maintain this EXACT format with these EXACT headings to ensure proper processing.
 """
     system_prompt = {"role": "system", "content": system_prompt_content}
     
-    # Clearer user prompt with explicit instructions to reference the conversation
+    # Create a comprehensive user prompt that includes all context
     user_input_content = f"""SCENARIO CONTEXT:
 {scenario_context}
 
 CONVERSATION TRANSCRIPT:
 {transcript}
 
-Please evaluate the teacher's effectiveness based on the SPECIFIC CONVERSATION above. 
-Look at the actual exchanges between teacher and student, and reference specific examples from this transcript.
-Evaluate based on clarity, engagement, questioning techniques, responsiveness, patience, and alignment with the teaching objective.
+EXTBOOK REFERENCES FOR EVALUATION:
+{passages_text}
+
+Please evaluate the teacher's effectiveness based on this SPECIFIC CONVERSATION and the textbook principles provided.
+Your evaluation should:
+1. Compare the teacher's approach to the textbook recommendations
+2. Analyze specific exchanges between teacher and student
+3. Reference particular principles from the textbooks
+4. Be specific about examples from the conversation
 
 Remember to format your response EXACTLY as specified with the headings: Score, Rationale, Strengths, and Areas for Improvement.
 """
@@ -501,20 +603,20 @@ Remember to format your response EXACTLY as specified with the headings: Score, 
     
     messages = [system_prompt, user_prompt]
     
-    print("Generating AI assessment (streaming internally)...")
-    print(f"Sending transcript with {len(chat_history)} exchanges and {len(transcript)} characters")
+    print("Generating comprehensive AI assessment with UVU textbook references...")
+    print(f"Sending transcript with {len(chat_history)} exchanges")
     
     raw_evaluation = ""
     try:
         stream = local_client.chat.completions.create(
             model=OPENAI_EXPERT_MODEL,
             messages=messages,
-            temperature=0.9,  # Lower temperature for more consistent formatting
-            max_tokens=8000,   # Increased token limit for more detailed evaluation
-            stream=True       # Use stream=True
+            temperature=0.7,  # Reduced temperature for more consistent formatting
+            max_tokens=9000,  # Increased token limit for more detailed evaluation with references
+            stream=True
         )
         
-        # Collect the streamed response internally
+        # Collect the streamed response
         for chunk in stream:
             if chunk.choices[0].delta.content is not None:
                 raw_evaluation += chunk.choices[0].delta.content
@@ -522,7 +624,6 @@ Remember to format your response EXACTLY as specified with the headings: Score, 
         print(f"Raw evaluation received: {len(raw_evaluation)} characters")
         
         # Improved regex patterns with better handling of variations
-        # These patterns are more flexible in matching the headings and content
         score_pattern = r"\*\*Score:\*\*\s*(\d+(\.\d+)?)\s*\/\s*10"
         rationale_pattern = r"\*\*Rationale:\*\*([\s\S]*?)(?=\*\*Strengths:\*\*|\Z)"
         strengths_pattern = r"\*\*Strengths:\*\*([\s\S]*?)(?=\*\*Areas for Improvement:\*\*|\Z)"
@@ -533,32 +634,69 @@ Remember to format your response EXACTLY as specified with the headings: Score, 
         strengths_match = re.search(strengths_pattern, raw_evaluation, re.MULTILINE)
         improvement_match = re.search(improvement_pattern, raw_evaluation, re.MULTILINE)
         
-        # Better handling of parsing results
+        # Handle parsing results with better fallbacks
         if score_match:
             score_str = f"{score_match.group(1).strip()} / 10"
         else:
-            # Fallback parsing for alternative formats
+            # Multiple fallback mechanisms for score
             alt_score_match = re.search(r"(\d+(\.\d+)?)\s*\/\s*10", raw_evaluation)
-            score_str = f"{alt_score_match.group(1).strip()} / 10" if alt_score_match else "N/A"
+            if alt_score_match:
+                score_str = f"{alt_score_match.group(1).strip()} / 10"
+            else:
+                # Last resort: look for any number that could be a score
+                number_match = re.search(r"(?:score|rating)[:\s]*(\d+(?:\.\d+)?)", raw_evaluation, re.IGNORECASE)
+                score_str = f"{number_match.group(1).strip()} / 10" if number_match else "N/A"
         
-        rationale = rationale_match.group(1).strip() if rationale_match else ""
-        strengths = strengths_match.group(1).strip() if strengths_match else ""
-        improvement_areas = improvement_match.group(1).strip() if improvement_match else ""
+        # Process other sections with improved fallbacks
+        if rationale_match:
+            rationale = rationale_match.group(1).strip()
+        else:
+            # Fallback: try to extract content that looks like a rationale
+            rationale_fallback = re.search(r"(?:rationale|reasoning|explanation)[:\s]*([\s\S]*?)(?=strengths|areas|\Z)", 
+                                          raw_evaluation, re.IGNORECASE)
+            rationale = rationale_fallback.group(1).strip() if rationale_fallback else ""
         
-        # If any section is missing, try to recover by displaying the raw response
+        if strengths_match:
+            strengths = strengths_match.group(1).strip()
+        else:
+            # Fallback: try alternate formats for strengths section
+            strengths_fallback = re.search(r"(?:strengths|positives|what worked well)[:\s]*([\s\S]*?)(?=areas|improvements|\Z)", 
+                                          raw_evaluation, re.IGNORECASE)
+            strengths = strengths_fallback.group(1).strip() if strengths_fallback else ""
+        
+        if improvement_match:
+            improvement_areas = improvement_match.group(1).strip()
+        else:
+            # Fallback: try alternate formats for improvements section
+            improvement_fallback = re.search(r"(?:areas for improvement|improvements|suggestions|recommendations)[:\s]*([\s\S]*)", 
+                                            raw_evaluation, re.IGNORECASE)
+            improvement_areas = improvement_fallback.group(1).strip() if improvement_fallback else ""
+        
+        # Final check for missing sections
         if not rationale or not strengths or not improvement_areas or score_str == "N/A":
             print("Warning: Could not parse one or more sections of the evaluation")
             
-            # Attempt to clean up the raw response for display
-            cleaned_response = raw_evaluation.strip()
-            
-            # Display appropriate warning
             if not raw_evaluation or len(raw_evaluation) < 50:
                 st.warning("Evaluation returned empty or incomplete response.", icon="⚠️")
                 return "N/A", "The evaluation system returned an incomplete response. Please try again.", "-", "-"
             else:
-                st.warning("Could not parse the evaluation format. Displaying raw response.", icon="⚠️")
-                return "N/A", f"Raw Evaluation:\n\n{cleaned_response}", "-", "-"
+                # Format the raw response for better readability
+                cleaned_response = raw_evaluation.strip().replace("\n\n\n", "\n\n")
+                
+                # Try one more parsing approach: divide the content into logical sections
+                if len(cleaned_response) > 100:
+                    st.warning("Could not parse standard format. Displaying best recovered information.", icon="⚠️")
+                    
+                    # If we have the raw text and it's substantial, try to extract sections
+                    recovered_score = "N/A"
+                    if score_str != "N/A":
+                        recovered_score = score_str
+                    
+                    # Return the best version we can
+                    return recovered_score, cleaned_response, "-", "-"
+                else:
+                    st.warning("Could not parse the evaluation format. Displaying raw response.", icon="⚠️")
+                    return "N/A", f"Raw Evaluation:\n\n{cleaned_response}", "-", "-"
         
         return score_str, rationale, strengths, improvement_areas
         
@@ -906,7 +1044,7 @@ elif st.session_state.current_scenario and not st.session_state.scenario_ended:
             # No st.rerun() needed here, button click + state change triggers it
         
         st.button(
-            "End Scenario and Get Feedback",
+            "End Scenario and Generate Assessment",
             key="end_chat_button",
             on_click=end_scenario_and_evaluate, # Define callback
             use_container_width=True,
