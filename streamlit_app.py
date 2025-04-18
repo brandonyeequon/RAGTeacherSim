@@ -511,7 +511,6 @@ st.markdown(
     """
     <style>
     .stSidebar {
-        background-color: #2E8B57;
         padding: 10px;
         border-radius: 4px;
     }
