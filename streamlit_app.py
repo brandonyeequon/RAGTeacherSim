@@ -6,7 +6,7 @@ import pickle
 import json
 import os
 import openai # Use OpenAI for chat and embeddings
-from typing import Optional, List, Dict, Tuple
+from typing import Optional, List, Dict, Tuple, Generator
 # import tempfile # No longer needed
 import requests
 from huggingface_hub import hf_hub_download, snapshot_download
@@ -277,18 +277,10 @@ def retrieve_textbook_context(query: str, top_k: int = 3) -> list[str]:
         distances, indices = index.search(query_embedding_np, top_k)
         print(f"  FAISS search complete. Found indices: {indices[0]}")
 
-        print("### Debug: Retrieved Passages")
-        print(f"Query: {query}")
-        print(f"Top {top_k} relevant passages:")
+        # Debugging output removed for brevity, was present in previous step
 
         valid_indices = [i for i in indices[0] if 0 <= i < len(textbook_passages)]
         retrieved = [textbook_passages[i] for i in valid_indices]
-
-        for i, passage_idx in enumerate(valid_indices):
-            print(f"**Passage {i+1}** (Index: {passage_idx}, Distance: {distances[0][i]:.4f})")
-            passage_preview = textbook_passages[passage_idx][:100] + "..." if len(textbook_passages[passage_idx]) > 100 else textbook_passages[passage_idx]
-            print(f"```\n{passage_preview}\n```")
-            print("---")
 
         print(f"  Retrieved {len(retrieved)} valid passages.")
         return retrieved
@@ -311,11 +303,13 @@ def retrieve_textbook_context(query: str, top_k: int = 3) -> list[str]:
         return []
 
 
-def generate_student_response(user_input: str, chat_history: list[dict], scenario_id: Optional[str] = None) -> str:
-    """Generates a student response using OpenAI Chat Completion."""
+# --- MODIFIED FOR STREAMING ---
+def generate_student_response(user_input: str, chat_history: list[dict], scenario_id: Optional[str] = None) -> Generator[str, None, None]:
+    """Generates a student response using OpenAI Chat Completion with streaming."""
     local_client = get_openai_client()
     if not local_client:
-        return "Uh oh, my connection is fuzzy! (OpenAI client unavailable)"
+        yield "Uh oh, my connection is fuzzy! (OpenAI client unavailable)"
+        return # Stop generation
 
     scenario_context = ""
     if scenario_id and scenario_id in scenarios_dict:
@@ -337,6 +331,7 @@ def generate_student_response(user_input: str, chat_history: list[dict], scenari
     system_prompt = {"role": "system", "content": system_prompt_content}
 
     messages = [system_prompt]
+    # Add previous messages from history
     for msg in chat_history:
          role = msg.get("role")
          content = msg.get("content")
@@ -344,34 +339,41 @@ def generate_student_response(user_input: str, chat_history: list[dict], scenari
             api_role = "assistant" if role == "assistant" else "user"
             messages.append({"role": api_role, "content": content})
 
-    messages.append({"role": "user", "content": user_input})
+    # Add the latest user input (which triggered this call) - NO, history already includes it before calling
+    # messages.append({"role": "user", "content": user_input}) # This would duplicate the last user message
 
     try:
-        response = local_client.chat.completions.create(
+        stream = local_client.chat.completions.create(
             model=OPENAI_STUDENT_MODEL,
-            messages=messages,
+            messages=messages, # Pass the history as constructed
             temperature=0.7,
-            max_tokens=60
+            max_tokens=60,
+            stream=True, # Enable streaming
         )
-        reply = response.choices[0].message.content.strip()
-        return reply if reply else "Hmm, I don't know."
+        # Yield content chunks from the stream
+        for chunk in stream:
+            if chunk.choices[0].delta.content is not None:
+                yield chunk.choices[0].delta.content
+
     except openai.APIError as e:
         st.error(f"OpenAI API Error (Student Response): {e}", icon="🚨")
-        return "Uh oh, my brain got fuzzy!"
+        yield "Uh oh, my brain got fuzzy!"
     except Exception as e:
         st.error(f"Error generating student response: {e}", icon="🚨")
-        return "Something went wrong with my thinking."
+        yield "Something went wrong with my thinking."
 
-
-def generate_expert_advice(question: str, conversation_history: list[dict], scenario_id: Optional[str] = None) -> str:
-    """Generates expert teacher advice using OpenAI Chat Completion, RAG with OpenAI embeddings."""
+# --- MODIFIED FOR STREAMING ---
+# --- MODIFIED FOR STREAMING ---
+def generate_expert_advice(question: str, conversation_history: list[dict], scenario_id: Optional[str] = None) -> Generator[str, None, None]:
+    """Generates expert teacher advice using OpenAI Chat Completion with streaming, RAG with OpenAI embeddings."""
     local_client = get_openai_client()
     if not local_client:
-        return "There was an issue connecting with the expert advisor AI (OpenAI client unavailable)."
+        yield "There was an issue connecting with the expert advisor AI (OpenAI client unavailable)."
+        return
 
     transcript = "\n".join(
         f"{'Teacher (User)' if m.get('role') == 'user' else 'Student (Assistant)'}: {m.get('content', '')}"
-        for m in conversation_history
+        for m in conversation_history # Using the student conversation history for context
     )
 
     scenario_context = ""
@@ -401,34 +403,41 @@ def generate_expert_advice(question: str, conversation_history: list[dict], scen
 
     user_input_content = f"{scenario_context}" \
                          f"**Teacher's Question:** {question}\n\n" \
-                         f"**Conversation Transcript So Far:**\n{transcript}\n\n" \
+                         f"**Conversation Transcript So Far (Student Interaction):**\n{transcript}\n\n" \
                          f"**Retrieved Teaching Principles (Consider these):**\n{passages_text}\n\n" \
                          f"**Expert Advice Request:** Based on all the above, what specific advice or next steps would you recommend for the teacher?"
 
     user_prompt = {"role": "user", "content": user_input_content}
 
+    # Construct messages for the API call - ONLY the system prompt and the current user question to the expert
     messages = [system_prompt, user_prompt]
 
     try:
-        response = local_client.chat.completions.create(
+        stream = local_client.chat.completions.create(
             model=OPENAI_EXPERT_MODEL,
             messages=messages,
             temperature=0.4,
-            max_tokens=400
+            max_tokens=400,
+            stream=True # Enable streaming
         )
-        reply = response.choices[0].message.content.strip()
-        return reply if reply else "I need more specific context from the conversation or scenario to provide tailored advice."
+        # Yield content chunks from the stream
+        for chunk in stream:
+            # --- THIS IS THE CORRECTED LINE ---
+            if chunk.choices[0].delta.content is not None:
+                yield chunk.choices[0].delta.content
+
     except openai.APIError as e:
         st.error(f"OpenAI API Error (Expert Advice): {e}", icon="🚨")
-        return "There was an issue connecting with the expert advisor AI."
+        yield "There was an issue connecting with the expert advisor AI." # Yield error message
     except Exception as e:
         st.error(f"Error generating expert advice: {e}", icon="🚨")
         import traceback
         traceback.print_exc()
-        return "An unexpected error occurred while generating advice."
+        yield "An unexpected error occurred while generating advice." # Yield error message
 
+# --- MODIFIED TO USE STREAMING INTERNALLY ---
 def generate_ai_assessment(chat_history: List[Dict[str, str]], scenario: Optional[Dict] = None) -> Tuple[str, str, str, str]:
-    """Generates a performance evaluation using the OpenAI API based on chat history and scenario."""
+    """Generates a performance evaluation using the OpenAI API (streaming internally) based on chat history and scenario."""
     local_client = get_openai_client()
     if not local_client:
         return "Evaluation Unavailable", "Could not connect to the assessment AI.", "-", "-"
@@ -483,17 +492,24 @@ Provide your evaluation in the following format, using Markdown headers:
 
     messages = [system_prompt, user_prompt]
 
-    print("Generating AI assessment...")
+    print("Generating AI assessment (streaming internally)...")
+    raw_evaluation = ""
     try:
-        response = local_client.chat.completions.create(
+        stream = local_client.chat.completions.create(
             model=OPENAI_EXPERT_MODEL,
             messages=messages,
             temperature=0.5,
-            max_tokens=500
+            max_tokens=500,
+            stream=True # Use stream=True
         )
-        raw_evaluation = response.choices[0].message.content.strip()
-        print("Raw AI Evaluation:\n", raw_evaluation)
+        # Collect the streamed response internally
+        for chunk in stream:
+            if chunk.choices[0].delta.content is not None:
+                raw_evaluation += chunk.choices[0].delta.content
 
+        print("Raw AI Evaluation (collected from stream):\n", raw_evaluation)
+
+        # Parse the complete raw_evaluation string
         score_match = re.search(r"^\*\*Score:\*\*\s*(\d+(\.\d+)?\s*/\s*10)", raw_evaluation, re.MULTILINE | re.IGNORECASE)
         rationale_match = re.search(r"\*\*Rationale:\*\*(.*?)(?=\*\*Strengths:\*\*|\Z)", raw_evaluation, re.DOTALL | re.MULTILINE | re.IGNORECASE)
         strengths_match = re.search(r"\*\*Strengths:\*\*(.*?)(?=\*\*Areas for Improvement:\*\*|\Z)", raw_evaluation, re.DOTALL | re.MULTILINE | re.IGNORECASE)
@@ -505,7 +521,9 @@ Provide your evaluation in the following format, using Markdown headers:
         improvement_areas = improvement_match.group(1).strip() if improvement_match else "Could not parse areas for improvement."
 
         if score_str == "N/A" and len(raw_evaluation) > 50:
-            return "N/A", "Could not parse evaluation. Raw response:", raw_evaluation, ""
+            # If parsing fails, provide raw response for debugging (but still structure the return tuple)
+             st.warning("Could not parse the evaluation format. Displaying raw response in Rationale.", icon="⚠️")
+             return "N/A", f"Raw Response:\n```\n{raw_evaluation}\n```", "-", "-"
 
         return score_str, rationale, strengths, improvement_areas
 
@@ -526,7 +544,7 @@ st.markdown(
     <style>
     .block-container {
         padding-top: 2rem;
-        padding-bottom: 2rem;
+        padding-bottom: 2rem; /* Reduced bottom padding to make space */
     }
     .stSidebar {
         padding: 15px;
@@ -550,12 +568,16 @@ st.markdown(
     .stExpander header {
         font-weight: bold;
     }
-    div.stSpinner {
-        display: none !important;
+    div.stSpinner > div > div { /* More specific selector for spinner animation */
+        /* display: none !important; */ /* Keep spinner for assessment */
     }
     .processing-active [data-testid="stChatInput"] {
         opacity: 0.6;
         pointer-events: none;
+    }
+    /* Ensure sidebar itself doesn't push content down unnecessarily */
+    section[data-testid="stSidebar"] > div:first-child {
+        padding-bottom: 60px; /* Add padding at the bottom of sidebar content area to avoid overlap with input */
     }
     </style>
     """,
@@ -571,21 +593,21 @@ with st.sidebar:
         padding: 10px;
         border-radius: 4px;
     }
-    
+
     /* Dark theme - white text */
-    body[data-theme="dark"] .stSidebarHeader, 
-    body[data-theme="dark"] .stSidebar .stTextInput input, 
-    body[data-theme="dark"] .stSidebar .stButton, 
+    body[data-theme="dark"] .stSidebarHeader,
+    body[data-theme="dark"] .stSidebar .stTextInput input,
+    body[data-theme="dark"] .stSidebar .stButton,
     body[data-theme="dark"] .stSidebar .stMarkdown,
     body[data-theme="dark"] .st-emotion-cache-1mw54nq.egexzqm0,
     body[data-theme="dark"] .st-emotion-cache-fsammq.egexzqm0 {
         color: white !important;
     }
-    
+
     /* Light theme - dark text */
-    body[data-theme="light"] .stSidebarHeader, 
-    body[data-theme="light"] .stSidebar .stTextInput input, 
-    body[data-theme="light"] .stSidebar .stButton, 
+    body[data-theme="light"] .stSidebarHeader,
+    body[data-theme="light"] .stSidebar .stTextInput input,
+    body[data-theme="light"] .stSidebar .stButton,
     body[data-theme="light"] .stSidebar .stMarkdown,
     body[data-theme="light"] .st-emotion-cache-1mw54nq.egexzqm0,
     body[data-theme="light"] .st-emotion-cache-fsammq.egexzqm0 {
@@ -597,51 +619,70 @@ with st.sidebar:
 
 
 with st.sidebar:
-    st.markdown(
-    "<h1 style='text-align: left; '>Expert Teacher</h1>", unsafe_allow_html=True
-)
+    st.markdown("<h1 style='text-align: left; '>Expert Teacher</h1>", unsafe_allow_html=True)
 
     if st.session_state.current_scenario and not st.session_state.scenario_ended:
-        if st.session_state.expert_first_message_sent and st.session_state.expert_chat_history:
-            expert_chat_container = st.container(height=700, border=False)
-            with expert_chat_container:
-                for msg in st.session_state.expert_chat_history:
-                    with st.chat_message(name=msg["role"]):
-                        st.markdown(msg["content"])
+        # --- MODIFIED: Container for messages WITHOUT fixed height ---
+        # Let the sidebar scroll naturally if content overflows
+        expert_chat_container = st.container(border=False)
+        with expert_chat_container:
+            # Display existing history
+            for msg in st.session_state.expert_chat_history:
+                with st.chat_message(name=msg["role"]):
+                    st.markdown(msg["content"])
 
-        if expert_prompt := st.chat_input("Ask the expert a question...", key="expert_sidebar_input"):
+            # New user messages and streaming responses will also be added within this container context below
+
+        # --- Input for new expert question - Placed *after* the container definition ---
+        # This allows the input to stay at the bottom of the sidebar's content flow
+        expert_prompt = st.chat_input(
+            "Ask the expert a question...",
+            key="expert_sidebar_input",
+            disabled=st.session_state.scenario_ended
+        )
+
+        if expert_prompt:
+            # Add user message to history FIRST
             st.session_state.expert_chat_history.append({"role": "user", "content": expert_prompt})
-            expert_response = generate_expert_advice(
-                expert_prompt,
-                st.session_state.chat_history,
-                st.session_state.current_scenario["scenario_id"]
-            )
-            st.session_state.expert_chat_history.append({"role": "assistant", "content": expert_response})
-            st.session_state.expert_first_message_sent = True
-            st.rerun() # Keep this one for now, ensures sidebar updates promptly after input
+
+            # Display user prompt immediately *within the container*
+            with expert_chat_container:
+                with st.chat_message("user"):
+                    st.markdown(expert_prompt)
+
+            # Generate and stream expert response *within the container*
+            with expert_chat_container:
+                 with st.chat_message("assistant"):
+                     # st.write_stream adds content progressively here
+                     full_expert_response = st.write_stream(generate_expert_advice(
+                         expert_prompt,
+                         st.session_state.chat_history, # Pass student chat history for context
+                         st.session_state.current_scenario["scenario_id"]
+                     ))
+                     # Add the complete response to history *after* streaming is done
+                     st.session_state.expert_chat_history.append({"role": "assistant", "content": full_expert_response})
+                     st.session_state.expert_first_message_sent = True
+                     # No explicit rerun here, state update handles refresh on next interaction
+
     elif st.session_state.scenario_ended:
          st.info("Expert advice is paused during evaluation.")
+         # Show disabled input at the bottom
+         st.chat_input("Ask the expert a question...", key="expert_sidebar_input_disabled", disabled=True)
     else:
+        # Initial state before scenario selection
         st.markdown("""
         <div class="expert-help-box">
             💡 <span class="expert-help-text">Ask for advice here once a teaching scenario has been selected from the main chat</span>
         </div>
-
         <style>
-        div.expert-help-box {
-            background-color: #2E8B57 !important;
-            padding: 12px 18px;
-            border-radius: 8px;
-            font-weight: bold;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .expert-help-text {
-            color: white !important;
-        }
+        /* Styles moved inside for locality if preferred, or keep global */
+        div.expert-help-box { background-color: #2E8B57 !important; padding: 12px 18px; border-radius: 8px; font-weight: bold; margin-bottom: 10px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .expert-help-text { color: white !important; }
         </style>
         """, unsafe_allow_html=True)
+        # Show disabled input at the bottom
+        st.chat_input("Ask the expert a question...", key="expert_sidebar_input_disabled_initial", disabled=True)
+
 
 st.markdown(
     """
@@ -693,6 +734,7 @@ if not st.session_state.current_scenario and not st.session_state.scenario_ended
                     break
             if scenario_id_found and scenario_id_found in scenarios_dict:
                  st.session_state.current_scenario = scenarios_dict[scenario_id_found]
+                 # Reset relevant states
                  st.session_state.chat_history = []
                  st.session_state.expert_chat_history = []
                  st.session_state.first_message_sent = False
@@ -702,6 +744,7 @@ if not st.session_state.current_scenario and not st.session_state.scenario_ended
                  st.session_state.evaluation_results = None
                  print(f"Scenario selected: {selected_title} (ID: {scenario_id_found})")
             else:
+                 # Handle error case: Reset if scenario details not found
                  st.session_state.current_scenario = None
                  st.session_state.chat_history = []
                  st.session_state.expert_chat_history = []
@@ -710,8 +753,10 @@ if not st.session_state.current_scenario and not st.session_state.scenario_ended
                  st.session_state.scenario_ended = False
                  st.session_state.evaluation_submitted = False
                  st.session_state.evaluation_results = None
-                 print(f"Warning: Scenario details not found for title '{selected_title}' or ID '{scenario_id_found}'.")
+                 print(f"Warning: Scenario details not found for title '{selected_title}' or ID '{scenario_id_found}'. Resetting.")
+                 st.warning(f"Could not load details for scenario '{selected_title}'. Please check data files or select another scenario.", icon="⚠️")
         else:
+             # Reset if "Select a scenario..." is chosen
              st.session_state.current_scenario = None
              st.session_state.chat_history = []
              st.session_state.expert_chat_history = []
@@ -721,6 +766,7 @@ if not st.session_state.current_scenario and not st.session_state.scenario_ended
              st.session_state.evaluation_submitted = False
              st.session_state.evaluation_results = None
              print("Scenario deselected.")
+        # No explicit rerun needed, state changes handled by Streamlit
 
     scenario_options = ["Select a scenario..."] + sorted([s.get('title', f"Untitled Scenario ID: {s.get('scenario_id', 'Unknown')}") for s in scenario_menu])
     st.selectbox(
@@ -728,10 +774,12 @@ if not st.session_state.current_scenario and not st.session_state.scenario_ended
         scenario_options,
         index=0,
         key="scenario_selector",
-        on_change=handle_scenario_change,
+        on_change=handle_scenario_change, # Callback handles state changes
         help="Select a classroom situation to practice."
     )
     st.write("")
+    st.chat_input("Your message to the student...", key="student_chat_input_disabled_initial", disabled=True) # Disable input initially
+
 
 # --- Scenario Active Area ---
 elif st.session_state.current_scenario and not st.session_state.scenario_ended:
@@ -775,38 +823,57 @@ elif st.session_state.current_scenario and not st.session_state.scenario_ended:
             st.markdown(f"{scenario['classroom_situation']}")
     st.write("")
 
-    if st.session_state.first_message_sent and st.session_state.chat_history:
-        chat_container = st.container(height=400, border=False)
-        with chat_container:
-            for msg in st.session_state.chat_history:
-                with st.chat_message(msg["role"]):
-                    st.markdown(msg["content"])
+    # Display chat history
+    # Use a container, but allow its height to be flexible (no fixed height)
+    chat_container = st.container(border=False)
+    with chat_container:
+        for msg in st.session_state.chat_history:
+            with st.chat_message(msg["role"]):
+                st.markdown(msg["content"])
+         # New messages will be added here dynamically by the input handling below
 
-    if prompt := st.chat_input("Your message to the student...", key="student_chat_input_widget"):
+    # Handle student chat input and response streaming
+    # Place chat input *after* the container where messages are displayed
+    prompt = st.chat_input("Your message to the student...", key="student_chat_input_widget")
+
+    if prompt:
+        # Add user message to history and display it immediately in the container
         st.session_state.chat_history.append({"role": "user", "content": prompt})
-        student_reply = generate_student_response(
-            prompt,
-            st.session_state.chat_history,
-            st.session_state.current_scenario["scenario_id"]
-        )
-        st.session_state.chat_history.append({"role": "assistant", "content": student_reply})
-        st.session_state.first_message_sent = True
-        st.rerun() # Keep this one for now, ensures main chat updates promptly after input
+        with chat_container:
+            with st.chat_message("user"):
+                st.markdown(prompt)
 
-    cols = st.columns([3, 1])
-    with cols[1]:
+        # Generate and stream student response within the container
+        with chat_container:
+            with st.chat_message("assistant"):
+                # st.write_stream handles displaying the generator output
+                # It also returns the full concatenated string when finished
+                full_student_response = st.write_stream(generate_student_response(
+                    prompt, # Pass only the new prompt here, function adds history
+                    st.session_state.chat_history, # Pass the full history
+                    st.session_state.current_scenario["scenario_id"]
+                ))
+                # Add the complete student response to history *after* streaming
+                st.session_state.chat_history.append({"role": "assistant", "content": full_student_response})
+                st.session_state.first_message_sent = True
+                # No explicit rerun needed
+
+    # End Scenario Button - Place below chat elements
+    cols = st.columns([3, 1]) # Or adjust layout as needed
+    with cols[1]: # Place button in the right column
         def end_scenario_and_evaluate():
             st.session_state.scenario_ended = True
-            st.session_state.evaluation_submitted = False
+            st.session_state.evaluation_submitted = False # Reset evaluation state
             st.session_state.evaluation_results = None
             print("Scenario ended by user. Proceeding to evaluation.")
-            # NO st.rerun() needed here, handled by Streamlit after callback finishes
+            # No st.rerun() needed here, button click + state change triggers it
 
         st.button(
             "End Scenario and Get Feedback",
             key="end_chat_button",
             on_click=end_scenario_and_evaluate, # Define callback
-            use_container_width=True
+            use_container_width=True,
+            disabled=not st.session_state.first_message_sent # Disable if no interaction yet
         )
 
 
@@ -814,30 +881,36 @@ elif st.session_state.current_scenario and not st.session_state.scenario_ended:
 elif st.session_state.scenario_ended:
     st.title("Scenario Evaluation")
 
+    # Generate evaluation if not already done
     if st.session_state.evaluation_results is None:
-        with st.spinner("Evaluating your interaction..."):
+        with st.spinner("Evaluating your interaction... Please wait."): # Added message
+             # Call the assessment function (which streams internally)
              score_str, rationale, strengths, improvement_areas = generate_ai_assessment(
                  st.session_state.chat_history,
                  st.session_state.current_scenario
              )
+             # Store the results
              st.session_state.evaluation_results = {
                  "score": score_str,
                  "rationale": rationale,
                  "strengths": strengths,
                  "improvement": improvement_areas
              }
+             # No rerun needed here, spinner context manager handles it
 
+    # Display evaluation results
     results = st.session_state.evaluation_results
     if results:
         st.subheader(f"Score: {results['score']}")
-        with st.expander("Rationale", expanded=False):
+        with st.expander("Rationale", expanded=(results['score'] == "N/A")): # Expand rationale if score parsing failed
              st.markdown(results['rationale'])
         st.subheader("Strengths")
         st.markdown(results['strengths'])
         st.subheader("Areas for Improvement")
         st.markdown(results['improvement'])
     else:
-        st.warning("Evaluation results are not available.")
+        # This case should ideally not happen if the spinner logic above works
+        st.warning("Evaluation is being processed or encountered an error.")
 
     if st.button("Select New Scenario"):
         # Reset session state for a new scenario selection
@@ -849,9 +922,10 @@ elif st.session_state.scenario_ended:
         st.session_state.expert_chat_history = []
         st.session_state.evaluation_results = None
         st.session_state.evaluation_submitted = False
-        st.rerun()
+        st.rerun() # Rerun to go back to the scenario selection screen
 
 # --- Footer ---
+# Footer HTML remains unchanged
 footer_html = """
 <style>
 .footer {
@@ -897,5 +971,6 @@ body[data-theme="dark"] .footer details[open] { background-color: #333; color: #
 </script>
 """
 
-if not st.session_state.scenario_ended or st.session_state.current_scenario:
+# Conditional rendering of footer based on state
+if not st.session_state.scenario_ended: # Show footer during selection and active scenario
      st.markdown(footer_html, unsafe_allow_html=True)
