@@ -15,7 +15,7 @@ import random # For testing the evaluation, can be removed later
 # --- Configuration & Initialization ---
 
 # Set page config first - Must be the first Streamlit command
-st.set_page_config(page_title="AcademiQ AI", layout="wide", page_icon="🎓")
+st.set_page_config(page_title="TeachCraft", layout="wide", page_icon="🎓")
 
 # --- Constants and Configuration ---
 # Hugging Face dataset info
@@ -511,7 +511,7 @@ st.markdown(
     """
     <style>
     .stSidebar {
-        background-color: #2d3e34;
+        background-color: #2E8B57;
         padding: 10px;
         border-radius: 4px;
     }
@@ -570,7 +570,7 @@ with st.sidebar:
 
         <style>
         div.expert-help-box {
-            background-color: #2D3E34 !important;
+            background-color: #2E8B57 !important;
             padding: 12px 18px;
             border-radius: 8px;
             font-weight: bold;
@@ -598,19 +598,28 @@ st.markdown(
 if not st.session_state.current_scenario:
     col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
-
-        image_path = "assets/academiq_logo.png"  # Define path
-        image_width = 200  # Define desired width
-
-        # Use markdown with an HTML div styled for centering
         st.markdown(
-            f"""
-            <div style="display: flex; justify-content: center;">
-                <img src="{image_path}" width="{image_width}">
+            """
+            <style>
+            .teachcraft-logo {
+                font-family: 'Playfair Display', serif;
+                font-size: 3.5rem;
+                text-align: center;
+                font-weight: bold;
+                margin: 20px 0;
+            }
+            .teachcraft-logo .teach {
+                color: #2E8B57;  /* Sea Green */
+            }
+            </style>
+            
+            <div class="teachcraft-logo">
+                <span class="teach">Teach</span>Craft
             </div>
-            """,
-            unsafe_allow_html=True,
+            """, 
+            unsafe_allow_html=True
         )
+
     st.write("""
     Transform the way you prepare for the classroom with our AI-powered teaching assistant!
     This interactive tool helps elementary school teachers refine their skills by simulating real classroom interactions. 
@@ -672,8 +681,26 @@ if not st.session_state.current_scenario:
 # --- Scenario Active Area --- (Original version from first prompt)
 if st.session_state.current_scenario:
     st.markdown(
-    "<h2 style='text-align: center; margin-bottom: 1.5rem;'>AcademiQ AI</h2>", unsafe_allow_html=True
-    ) 
+        """
+        <style>
+        .teachcraft-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.5rem;
+            text-align: center;
+            font-weight: bold;
+            margin: 20px 0 1.5rem 0;
+        }
+        .teachcraft-logo .teach {
+            color: #2E8B57;  /* Sea Green */
+        }
+        </style>
+        
+        <div class="teachcraft-logo">
+            <span class="teach">Teach</span>Craft
+        </div>
+        """, 
+        unsafe_allow_html=True
+    )
     with st.expander("Current Scenario Details", expanded=True):
         scenario = st.session_state.current_scenario
         st.subheader(f"{scenario.get('title', 'Unnamed Scenario')}")
