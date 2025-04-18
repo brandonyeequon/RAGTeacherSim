@@ -6,11 +6,12 @@ import pickle
 import json
 import os
 import openai # Use OpenAI for chat and embeddings
-from typing import Optional, List
+from typing import Optional, List, Dict, Tuple
 # import tempfile # No longer needed
 import requests
 from huggingface_hub import hf_hub_download, snapshot_download
 import random # For testing the evaluation, can be removed later
+import re # Import regex for parsing
 
 # --- Configuration & Initialization ---
 
@@ -37,7 +38,7 @@ HF_TEXTBOOK_PASSAGES_PATH = "textbook_passages.pkl"  # Relative path in the repo
 # Embedding and model configuration
 OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"
 OPENAI_STUDENT_MODEL = "gpt-4o-mini"
-OPENAI_EXPERT_MODEL = "gpt-4o"
+OPENAI_EXPERT_MODEL = "gpt-4o" # Use the more powerful model for evaluation
 
 # --- OpenAI API Key Setup ---
 try:
@@ -76,11 +77,6 @@ def load_faiss_index():
         try:
             index = faiss.read_index(FAISS_INDEX_PATH)
             print(f"Successfully loaded FAISS index. Size: {index.ntotal} vectors, Dimension: {index.d}")
-            # Basic dimension check (can be refined if needed)
-            # Note: Correct dimension for text-embedding-3-small is 1536
-            # expected_dim = 1536 # Or derive dynamically if possible
-            # if index.d != expected_dim:
-            #     st.warning(f"Warning: Loaded FAISS index dimension ({index.d}) might not match expected embedding dimension ({expected_dim} for {OPENAI_EMBEDDING_MODEL}). Ensure index was created with the correct model.", icon="⚠️")
             return index
         except Exception as e:
              st.error(f"Error reading FAISS index file '{FAISS_INDEX_PATH}': {e}. Was it created with the correct model ({OPENAI_EMBEDDING_MODEL})?", icon="🚨")
@@ -114,13 +110,10 @@ def load_scenario_data():
 
         if not os.path.exists(SCENARIO_MENU_PATH):
              st.error(f"Error: Scenario menu file not found at '{SCENARIO_MENU_PATH}'. Please ensure 'data/scenario_menu.json' exists.", icon="🚨")
-             # Attempt to continue without scenarios if absolutely necessary, or stop
-             # return [], {} # Option 1: Continue without scenarios
-             st.stop() # Option 2: Stop execution
+             st.stop()
         if not os.path.exists(SCENARIOS_DATA_PATH):
             st.error(f"Error: Scenarios data file not found at '{SCENARIOS_DATA_PATH}'. Please ensure 'data/scenarios.json' exists.", icon="🚨")
-            # return [], {} # Option 1: Continue without scenarios
-            st.stop() # Option 2: Stop execution
+            st.stop()
 
         with open(SCENARIO_MENU_PATH, "r") as f:
             menu_data = json.load(f)
@@ -171,56 +164,39 @@ def ensure_files_downloaded():
                     cache_dir=None # Avoid using HF cache, download directly
 
                 )
-                # hf_hub_download might place it in a subdirectory structure based on the filename
-                # We need to ensure it's exactly at local_path
                 expected_download_location = os.path.join(target_directory, hf_path)
 
-                # Check if the downloaded file is where we expect it
                 if os.path.abspath(downloaded_path) != os.path.abspath(local_path):
-                     # This case might happen if hf_path includes subdirs, e.g. "data/file.pkl"
-                     # If local_path is just "file.pkl" and target_dir is "."
-                     # hf_hub_download might create "./data/file.pkl"
-                     # We need to move it to the expected location "."
                      if os.path.exists(downloaded_path):
                         import shutil
                         print(f"  Moving downloaded file from {downloaded_path} to {local_path}")
                         try:
                              shutil.move(downloaded_path, local_path)
-                             # Clean up potential empty directories left by hf_hub_download
                              try:
-                                 # Only remove if the original download path had subdirs relative to target_dir
                                  if os.path.dirname(hf_path):
                                      os.removedirs(os.path.dirname(downloaded_path))
                              except OSError:
-                                 pass # Directory not empty or doesn't exist, ignore
+                                 pass
                         except Exception as move_err:
                              st.error(f"Failed to move downloaded file to {local_path}: {move_err}", icon="🚨")
                              st.stop()
                      else:
-                         # This check handles cases where the download path reported doesn't match
-                         # but the file might already be at the target location due to library logic.
                          if not os.path.exists(local_path):
                              st.error(f"Download completed, but the file is not at the expected location: {local_path}. Downloaded path reported as: {downloaded_path}", icon="🚨")
                              st.stop()
 
-
-                # Verify again after potential move
                 if os.path.exists(local_path):
                      st.success(f"Successfully downloaded {desc} to {local_path}", icon="✅")
                      print(f"  Successfully downloaded {desc} to {local_path}")
                 else:
-                     # If after all attempts the file isn't there, stop.
                      st.error(f"Download attempted, but {desc} file still not found at {local_path}.", icon="🚨")
                      st.stop()
-
 
             except Exception as e:
                 st.error(f"Failed to download {desc} from Hugging Face: {e}", icon="🚨")
                 st.info(f"Please ensure the file '{hf_path}' exists in the repo '{HUGGINGFACE_REPO_ID}' or place the file manually at '{local_path}'.")
                 st.stop()
 
-    # Check for essential JSON files (assumed to be local, not downloaded)
-    # Ensure the data directory exists first
     os.makedirs(LOCAL_DATA_DIR, exist_ok=True)
     if not os.path.exists(SCENARIO_MENU_PATH):
         st.error(f"Essential scenario menu file not found locally at {SCENARIO_MENU_PATH}. Please ensure '{LOCAL_DATA_DIR}' directory exists and contains 'scenario_menu.json'.", icon="🚨")
@@ -233,33 +209,35 @@ def ensure_files_downloaded():
 
 
 # --- Load Resources ---
-# Ensure all required files are in place before proceeding
 ensure_files_downloaded()
-# Now load them using the cached functions
 index = load_faiss_index()
 textbook_passages = load_textbook_passages()
 scenario_menu, scenarios_dict = load_scenario_data()
 
 # --- Initialize Session State ---
 if "chat_history" not in st.session_state:
-    st.session_state.chat_history = [] # For student-teacher chat
+    st.session_state.chat_history = []
 if "expert_chat_history" not in st.session_state:
-    st.session_state.expert_chat_history = [] # For expert advice chat
+    st.session_state.expert_chat_history = []
 if "current_scenario" not in st.session_state:
     st.session_state.current_scenario = None
 if "first_message_sent" not in st.session_state:
     st.session_state.first_message_sent = False
 if "expert_first_message_sent" not in st.session_state:
     st.session_state.expert_first_message_sent = False
+if 'scenario_ended' not in st.session_state:
+    st.session_state.scenario_ended = False
+if 'evaluation_submitted' not in st.session_state: # Kept for potential future use, not strictly needed now
+    st.session_state.evaluation_submitted = False
+if 'evaluation_results' not in st.session_state:
+    st.session_state.evaluation_results = None
 
 # --- Core Logic Functions ---
 
 def get_openai_client():
     """Returns an initialized OpenAI client or None."""
-    # Use the globally initialized client if available
     if client:
         return client
-    # Otherwise, try to initialize again (should not happen if initial setup worked)
     try:
         return openai.OpenAI(api_key=st.secrets["OPENAI_API_KEY"])
     except Exception as e:
@@ -273,7 +251,7 @@ def retrieve_textbook_context(query: str, top_k: int = 3) -> list[str]:
     local_client = get_openai_client()
     if not local_client:
         st.error("OpenAI client not available for context retrieval.", icon="🚨")
-        return [] # Client initialization failed
+        return []
 
     print(f"Retrieving context for query (first 50 chars): '{query[:50]}...'")
     try:
@@ -288,20 +266,17 @@ def retrieve_textbook_context(query: str, top_k: int = 3) -> list[str]:
 
         query_embedding_np = np.array([query_embedding]).astype('float32')
 
-        # Ensure index is loaded and dimensions match before searching
         if index is None:
              st.error("FAISS index is not loaded. Cannot perform search.", icon="🚨")
              return []
         if index.d != embedding_dim:
              st.error(f"Dimension mismatch! FAISS index dimension ({index.d}) != Query embedding dimension ({embedding_dim}). Ensure the index file '{FAISS_INDEX_PATH}' was created using the embedding model '{OPENAI_EMBEDDING_MODEL}'.", icon="🚨")
-             # You might want to log more details here or try to re-initialize
              return []
 
         print(f"  Searching FAISS index (size: {index.ntotal} vectors, dimension: {index.d})...")
         distances, indices = index.search(query_embedding_np, top_k)
         print(f"  FAISS search complete. Found indices: {indices[0]}")
 
-        # Debug output: Add this section to see the passages
         print("### Debug: Retrieved Passages")
         print(f"Query: {query}")
         print(f"Top {top_k} relevant passages:")
@@ -309,10 +284,8 @@ def retrieve_textbook_context(query: str, top_k: int = 3) -> list[str]:
         valid_indices = [i for i in indices[0] if 0 <= i < len(textbook_passages)]
         retrieved = [textbook_passages[i] for i in valid_indices]
 
-        # Display each passage with its score and index
         for i, passage_idx in enumerate(valid_indices):
             print(f"**Passage {i+1}** (Index: {passage_idx}, Distance: {distances[0][i]:.4f})")
-            # Print only the first 100 chars to keep logs concise
             passage_preview = textbook_passages[passage_idx][:100] + "..." if len(textbook_passages[passage_idx]) > 100 else textbook_passages[passage_idx]
             print(f"```\n{passage_preview}\n```")
             print("---")
@@ -334,7 +307,7 @@ def retrieve_textbook_context(query: str, top_k: int = 3) -> list[str]:
     except Exception as e:
         st.error(f"Error retrieving textbook context: {e}", icon="⚠️")
         import traceback
-        traceback.print_exc() # Print full traceback for debugging
+        traceback.print_exc()
         return []
 
 
@@ -368,11 +341,10 @@ def generate_student_response(user_input: str, chat_history: list[dict], scenari
          role = msg.get("role")
          content = msg.get("content")
          if role and content:
-            # Use 'assistant' for the student's role in the API call
             api_role = "assistant" if role == "assistant" else "user"
             messages.append({"role": api_role, "content": content})
 
-    messages.append({"role": "user", "content": user_input}) # Teacher's latest message
+    messages.append({"role": "user", "content": user_input})
 
     try:
         response = local_client.chat.completions.create(
@@ -397,19 +369,16 @@ def generate_expert_advice(question: str, conversation_history: list[dict], scen
     if not local_client:
         return "There was an issue connecting with the expert advisor AI (OpenAI client unavailable)."
 
-    # Format transcript for the expert model
     transcript = "\n".join(
-        # Label turns clearly for the expert
         f"{'Teacher (User)' if m.get('role') == 'user' else 'Student (Assistant)'}: {m.get('content', '')}"
         for m in conversation_history
     )
 
     scenario_context = ""
-    retrieval_query = question # Start retrieval query with the teacher's specific question
+    retrieval_query = question
     if scenario_id and scenario_id in scenarios_dict:
         scenario = scenarios_dict[scenario_id]
         scenario_context = f"**Scenario Context:**\nTitle: {scenario.get('title', 'N/A')}\nDescription: {scenario.get('description', 'N/A')}\n"
-        # Add more scenario details to the retrieval query to get relevant passages
         retrieval_query += f" scenario: {scenario.get('title', '')} {scenario.get('description', '')}"
         if "student_name" in scenario and scenario["student_name"] != "Whole Class":
             scenario_context += f"Student: {scenario['student_name']}\n"
@@ -422,13 +391,11 @@ def generate_expert_advice(question: str, conversation_history: list[dict], scen
         if "teacher_objective" in scenario:
             scenario_context += f"\nTeaching Objective:\n{scenario['teacher_objective']}\n"
             retrieval_query += f" objective: {scenario['teacher_objective']}"
-        scenario_context += "\n---\n" # Separator
+        scenario_context += "\n---\n"
 
-    # Retrieve context based on the combined query
     passages = retrieve_textbook_context(retrieval_query)
     passages_text = "\n".join(f"- {p}" for p in passages) if passages else "No specific teaching principles automatically retrieved for this query."
 
-    # Construct the prompt for the expert model
     system_prompt_content = "You are an expert teacher trainer AI specializing in elementary education (specifically 2nd grade). Provide specific, actionable, and concise advice based on educational best practices and the provided context (scenario, conversation transcript, retrieved teaching principles). Focus on practical strategies the teacher can implement *next* in *this specific interaction*. If a 'Teaching Objective' is provided, ensure your advice aligns with achieving it. Use clear, direct language suitable for a busy teacher. Directly reference relevant retrieved principles if applicable."
     system_prompt = {"role": "system", "content": system_prompt_content}
 
@@ -446,8 +413,8 @@ def generate_expert_advice(question: str, conversation_history: list[dict], scen
         response = local_client.chat.completions.create(
             model=OPENAI_EXPERT_MODEL,
             messages=messages,
-            temperature=0.4, # Slightly lower temperature for more focused advice
-            max_tokens=400  # Allow slightly longer advice if needed
+            temperature=0.4,
+            max_tokens=400
         )
         reply = response.choices[0].message.content.strip()
         return reply if reply else "I need more specific context from the conversation or scenario to provide tailored advice."
@@ -457,13 +424,103 @@ def generate_expert_advice(question: str, conversation_history: list[dict], scen
     except Exception as e:
         st.error(f"Error generating expert advice: {e}", icon="🚨")
         import traceback
-        traceback.print_exc() # Print full traceback for debugging
+        traceback.print_exc()
         return "An unexpected error occurred while generating advice."
+
+def generate_ai_assessment(chat_history: List[Dict[str, str]], scenario: Optional[Dict] = None) -> Tuple[str, str, str, str]:
+    """Generates a performance evaluation using the OpenAI API based on chat history and scenario."""
+    local_client = get_openai_client()
+    if not local_client:
+        return "Evaluation Unavailable", "Could not connect to the assessment AI.", "-", "-"
+
+    if not chat_history:
+        return "N/A", "No conversation took place.", "-", "-"
+
+    transcript = "\n".join(
+        f"{'Teacher' if m.get('role') == 'user' else 'Student'}: {m.get('content', '')}"
+        for m in chat_history
+    )
+
+    scenario_context = "No specific scenario context provided."
+    if scenario:
+        scenario_context = f"**Scenario:** {scenario.get('title', 'N/A')}\n" \
+                           f"**Description:** {scenario.get('description', 'N/A')}\n"
+        if "student_name" in scenario:
+            scenario_context += f"**Student:** {scenario['student_name']}"
+            if scenario["student_name"] != "Whole Class" and "student_details" in scenario:
+                 scenario_context += f" (Profile: {scenario['student_details']})\n"
+            else:
+                 scenario_context += "\n"
+        if "teacher_objective" in scenario:
+            scenario_context += f"**Teacher's Objective:** {scenario['teacher_objective']}\n"
+        if "classroom_situation" in scenario:
+            scenario_context += f"**Situation:** {scenario['classroom_situation']}\n"
+
+    system_prompt_content = """You are an expert educational assessor specializing in evaluating teacher-student interactions in elementary school (specifically 2nd grade, age 7-8).
+Your task is to analyze the provided conversation transcript between a teacher (user) and a simulated student (assistant) within the given scenario context.
+Evaluate the teacher's performance based on pedagogical best practices for this age group. Focus on clarity, engagement, questioning techniques, responsiveness, patience, and alignment with the scenario's objective (if provided).
+Provide your evaluation in the following format, using Markdown headers:
+
+**Score:**
+[Provide a numerical score out of 10 for the teacher's overall effectiveness in this interaction.]
+
+**Rationale:**
+[Briefly explain the reasoning behind the score.]
+
+**Strengths:**
+[List 1-3 specific positive aspects of the teacher's approach observed in the transcript.]
+
+**Areas for Improvement:**
+[List 1-3 specific, actionable suggestions for how the teacher could improve their interaction in similar situations. Be constructive.]
+"""
+    system_prompt = {"role": "system", "content": system_prompt_content}
+
+    user_input_content = f"**Scenario Context:**\n{scenario_context}\n\n" \
+                         f"**Conversation Transcript:**\n```\n{transcript}\n```\n\n" \
+                         f"**Assessment Request:** Please provide your evaluation based on the transcript and scenario."
+
+    user_prompt = {"role": "user", "content": user_input_content}
+
+    messages = [system_prompt, user_prompt]
+
+    print("Generating AI assessment...")
+    try:
+        response = local_client.chat.completions.create(
+            model=OPENAI_EXPERT_MODEL,
+            messages=messages,
+            temperature=0.5,
+            max_tokens=500
+        )
+        raw_evaluation = response.choices[0].message.content.strip()
+        print("Raw AI Evaluation:\n", raw_evaluation)
+
+        score_match = re.search(r"^\*\*Score:\*\*\s*(\d+(\.\d+)?\s*/\s*10)", raw_evaluation, re.MULTILINE | re.IGNORECASE)
+        rationale_match = re.search(r"\*\*Rationale:\*\*(.*?)(?=\*\*Strengths:\*\*|\Z)", raw_evaluation, re.DOTALL | re.MULTILINE | re.IGNORECASE)
+        strengths_match = re.search(r"\*\*Strengths:\*\*(.*?)(?=\*\*Areas for Improvement:\*\*|\Z)", raw_evaluation, re.DOTALL | re.MULTILINE | re.IGNORECASE)
+        improvement_match = re.search(r"\*\*Areas for Improvement:\*\*(.*)", raw_evaluation, re.DOTALL | re.MULTILINE | re.IGNORECASE)
+
+        score_str = score_match.group(1).strip() if score_match else "N/A"
+        rationale = rationale_match.group(1).strip() if rationale_match else "Could not parse rationale."
+        strengths = strengths_match.group(1).strip() if strengths_match else "Could not parse strengths."
+        improvement_areas = improvement_match.group(1).strip() if improvement_match else "Could not parse areas for improvement."
+
+        if score_str == "N/A" and len(raw_evaluation) > 50:
+            return "N/A", "Could not parse evaluation. Raw response:", raw_evaluation, ""
+
+        return score_str, rationale, strengths, improvement_areas
+
+    except openai.APIError as e:
+        st.error(f"OpenAI API Error (Assessment): {e}", icon="🚨")
+        return "Evaluation Error", f"API Error: {e}", "-", "-"
+    except Exception as e:
+        st.error(f"Error generating assessment: {e}", icon="🚨")
+        import traceback
+        traceback.print_exc()
+        return "Evaluation Error", f"Unexpected Error: {e}", "-", "-"
 
 
 # --- Streamlit UI ---
 
-# Apply custom styling (Updated UI with image)
 st.markdown(
     """
     <style>
@@ -493,11 +550,9 @@ st.markdown(
     .stExpander header {
         font-weight: bold;
     }
-    /* Hide spinners */
     div.stSpinner {
         display: none !important;
     }
-    /* Disable chat inputs while processing */
     .processing-active [data-testid="stChatInput"] {
         opacity: 0.6;
         pointer-events: none;
@@ -521,46 +576,31 @@ st.markdown(
     """, unsafe_allow_html=True
 )
 
-# --- Sidebar for Expert Advisor --- (Original version from first prompt)
 with st.sidebar:
     st.markdown(
     "<h1 style='text-align: left; '>Expert Teacher</h1>", unsafe_allow_html=True
 )
 
-    # Only show expert chat if scenario is selected
-    if st.session_state.current_scenario:
-        # Only show scrollable container after first message has been sent
+    if st.session_state.current_scenario and not st.session_state.scenario_ended:
         if st.session_state.expert_first_message_sent and st.session_state.expert_chat_history:
-            # Create a scrollable container for expert chat messages
             expert_chat_container = st.container(height=700, border=False)
-
-            # Display expert chat history in chronological order
             with expert_chat_container:
                 for msg in st.session_state.expert_chat_history:
-                    # Use role directly ('user' or 'assistant' as stored)
                     with st.chat_message(name=msg["role"]):
                         st.markdown(msg["content"])
 
-        # Expert chat input area at the bottom of sidebar
         if expert_prompt := st.chat_input("Ask the expert a question...", key="expert_sidebar_input"):
-            # Add user message to chat history
             st.session_state.expert_chat_history.append({"role": "user", "content": expert_prompt})
-
-            # Generate expert response without spinner (UI reflects this by not showing one)
             expert_response = generate_expert_advice(
                 expert_prompt,
-                st.session_state.chat_history, # Pass student chat history
+                st.session_state.chat_history,
                 st.session_state.current_scenario["scenario_id"]
             )
-
-            # Add expert response to chat history
             st.session_state.expert_chat_history.append({"role": "assistant", "content": expert_response})
-
-            # Mark first message as sent
             st.session_state.expert_first_message_sent = True
-
-            # Force a rerun to update the UI properly
-            st.rerun()
+            st.rerun() # Keep this one for now, ensures sidebar updates promptly after input
+    elif st.session_state.scenario_ended:
+         st.info("Expert advice is paused during evaluation.")
     else:
         st.markdown("""
         <div class="expert-help-box">
@@ -582,8 +622,7 @@ with st.sidebar:
         }
         </style>
         """, unsafe_allow_html=True)
-        
-# --- Main Panel --- (Original version from first prompt)
+
 st.markdown(
     """
     <style>
@@ -594,7 +633,8 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-if not st.session_state.current_scenario:
+# --- Scenario Selection Area ---
+if not st.session_state.current_scenario and not st.session_state.scenario_ended:
     col1, col2, col3 = st.columns([1, 4, 1])
     with col2:
         st.markdown(
@@ -608,77 +648,73 @@ if not st.session_state.current_scenario:
                 margin: 20px 0;
             }
             .teachcraft-logo .teach {
-                color: #2E8B57;  /* Sea Green */
+                color: #2E8B57;
             }
             </style>
-            
-            <div class="teachcraft-logo">
-                <span class="teach">Teach</span>Craft
-            </div>
-            """, 
+            <div class="teachcraft-logo"><span class="teach">Teach</span>Craft</div>
+            """,
             unsafe_allow_html=True
         )
 
     st.write("""
     Transform the way you prepare for the classroom with our AI-powered teaching assistant!
-    This interactive tool helps elementary school teachers refine their skills by simulating real classroom interactions. 
+    This interactive tool helps elementary school teachers refine their skills by simulating real classroom interactions.
     The AI behaves like a real second-grader, responding dynamically to your teaching style, questions, and guidance.
     """)
     st.write("")
 
-    # Scenario selection dropdown
     def handle_scenario_change():
         selected_title = st.session_state.scenario_selector
         if selected_title != "Select a scenario...":
-            # Find the scenario ID from the menu list based on title
             scenario_id_found = None
             for menu_item in scenario_menu:
                 if menu_item.get("title") == selected_title:
                     scenario_id_found = menu_item.get("scenario_id")
                     break
-
             if scenario_id_found and scenario_id_found in scenarios_dict:
                  st.session_state.current_scenario = scenarios_dict[scenario_id_found]
-                 # Reset states for new scenario
                  st.session_state.chat_history = []
                  st.session_state.expert_chat_history = []
                  st.session_state.first_message_sent = False
                  st.session_state.expert_first_message_sent = False
+                 st.session_state.scenario_ended = False
+                 st.session_state.evaluation_submitted = False
+                 st.session_state.evaluation_results = None
                  print(f"Scenario selected: {selected_title} (ID: {scenario_id_found})")
             else:
-                 # Handle case where title is selected but ID not found or not in dict
                  st.session_state.current_scenario = None
                  st.session_state.chat_history = []
                  st.session_state.expert_chat_history = []
                  st.session_state.first_message_sent = False
                  st.session_state.expert_first_message_sent = False
+                 st.session_state.scenario_ended = False
+                 st.session_state.evaluation_submitted = False
+                 st.session_state.evaluation_results = None
                  print(f"Warning: Scenario details not found for title '{selected_title}' or ID '{scenario_id_found}'.")
-
         else:
-             # Reset if "Select a scenario..." is chosen
              st.session_state.current_scenario = None
              st.session_state.chat_history = []
              st.session_state.expert_chat_history = []
              st.session_state.first_message_sent = False
              st.session_state.expert_first_message_sent = False
+             st.session_state.scenario_ended = False
+             st.session_state.evaluation_submitted = False
+             st.session_state.evaluation_results = None
              print("Scenario deselected.")
-        # No explicit rerun needed here, Streamlit handles it on widget change
 
-    # Prepare dropdown options using the scenario_menu list
     scenario_options = ["Select a scenario..."] + sorted([s.get('title', f"Untitled Scenario ID: {s.get('scenario_id', 'Unknown')}") for s in scenario_menu])
-
     st.selectbox(
         "",
         scenario_options,
-        index=0, # Default to "Select a scenario..."
+        index=0,
         key="scenario_selector",
         on_change=handle_scenario_change,
         help="Select a classroom situation to practice."
     )
     st.write("")
 
-# --- Scenario Active Area --- (Original version from first prompt)
-if st.session_state.current_scenario:
+# --- Scenario Active Area ---
+elif st.session_state.current_scenario and not st.session_state.scenario_ended:
     st.markdown(
         """
         <style>
@@ -689,15 +725,10 @@ if st.session_state.current_scenario:
             font-weight: bold;
             margin: 20px 0 1.5rem 0;
         }
-        .teachcraft-logo .teach {
-            color: #2E8B57;  /* Sea Green */
-        }
+        .teachcraft-logo .teach { color: #2E8B57; }
         </style>
-        
-        <div class="teachcraft-logo">
-            <span class="teach">Teach</span>Craft
-        </div>
-        """, 
+        <div class="teachcraft-logo"><span class="teach">Teach</span>Craft</div>
+        """,
         unsafe_allow_html=True
     )
     with st.expander("Current Scenario Details", expanded=True):
@@ -724,101 +755,83 @@ if st.session_state.current_scenario:
             st.markdown(f"{scenario['classroom_situation']}")
     st.write("")
 
-    # Only show scrollable container after first message has been sent
     if st.session_state.first_message_sent and st.session_state.chat_history:
-        # Create a scrollable container with fixed height for chat messages
         chat_container = st.container(height=400, border=False)
-
-        # Display chat messages in the fixed-height container
         with chat_container:
             for msg in st.session_state.chat_history:
-                with st.chat_message(msg["role"]): # Uses 'user' or 'assistant' as stored
+                with st.chat_message(msg["role"]):
                     st.markdown(msg["content"])
 
-    # Chat input area (always visible, but positioned differently based on whether first message sent)
-    if not st.session_state.scenario_ended:
+    if prompt := st.chat_input("Your message to the student...", key="student_chat_input_widget"):
+        st.session_state.chat_history.append({"role": "user", "content": prompt})
+        student_reply = generate_student_response(
+            prompt,
+            st.session_state.chat_history,
+            st.session_state.current_scenario["scenario_id"]
+        )
+        st.session_state.chat_history.append({"role": "assistant", "content": student_reply})
+        st.session_state.first_message_sent = True
+        st.rerun() # Keep this one for now, ensures main chat updates promptly after input
 
-        if prompt := st.chat_input("Your message to the student...", key="student_chat_input_widget"):
-            # Add user message to chat history
-            st.session_state.chat_history.append({"role": "user", "content": prompt})
+    cols = st.columns([3, 1])
+    with cols[1]:
+        def end_scenario_and_evaluate():
+            st.session_state.scenario_ended = True
+            st.session_state.evaluation_submitted = False
+            st.session_state.evaluation_results = None
+            print("Scenario ended by user. Proceeding to evaluation.")
+            # NO st.rerun() needed here, handled by Streamlit after callback finishes
 
-            # Generate student response without spinner (UI reflects this)
-            student_reply = generate_student_response(
-                prompt,
-                st.session_state.chat_history,
-                st.session_state.current_scenario["scenario_id"]
-            )
-
-            # Add student response to chat history
-            st.session_state.chat_history.append({"role": "assistant", "content": student_reply})
-
-            # Mark first message as sent
-            st.session_state.first_message_sent = True
-
-            # Force a rerun to update the UI properly
-            st.rerun()
-
-    # End scenario button (Updated version)
-    if not st.session_state.scenario_ended:
-        cols = st.columns([3, 1])
-        with cols[1]:
-            def end_scenario():
-                st.session_state.chat_history = []
-                st.session_state.expert_chat_history = []
-                st.session_state.scenario_ended = True
-                st.session_state.evaluation_submitted = False
-                print("Scenario ended by user.")
-                # No rerun needed here, state change handles it
-            st.button("End Scenario", key="end_chat_button", on_click=end_scenario, use_container_width=True)
+        st.button(
+            "End Scenario and Get Feedback",
+            key="end_chat_button",
+            on_click=end_scenario_and_evaluate, # Define callback
+            use_container_width=True
+        )
 
 
-def generate_assessment(chat_history):
-    # For the sake of this example, we'll randomly generate a score, feedback, and advice
-    score = random.randint(5, 10)  # Replace with actual model score
-    score_description = f"Score: {score}/10 - Your interaction was {score * 10}% effective."
-    
-    # AI feedback and advice
-    feedback = f"Your conversation was well-structured and on-topic." if score > 5 else f"Try to engage the student more actively."
-    advice = f"Consider asking more open-ended questions to encourage student participation." if score < 5 else f"Great job! Keep the conversation flowing naturally."
-    
-    return score_description, feedback, advice
-
-# Initializing session state if not present
-if 'scenario_ended' not in st.session_state:
-    st.session_state.scenario_ended = False
-    st.session_state.chat_history = []
-    st.session_state.evaluation_submitted = False
-    st.session_state.first_message_sent = False
-    st.session_state.expert_first_message_sent = False
-    
-    
-if st.session_state.scenario_ended and not st.session_state.evaluation_submitted:
+# --- Evaluation Screen ---
+elif st.session_state.scenario_ended:
     st.title("Scenario Evaluation")
 
-    # Simulate an AI evaluation of the chat history
-    score_description, feedback, advice = generate_assessment(st.session_state.chat_history)
-    
-    # Show the evaluation to the user
-    st.subheader("Your Score")
-    st.write(score_description)
-    
-    st.subheader("Feedback")
-    st.write(feedback)
-    
-    st.subheader("Advice for Improvement")
-    st.write(advice)
-    
-    # Button to go back to the chat and select a new scenario
-    if st.button("Close Evaluation"):
-        # Reset session state for a new scenario
+    if st.session_state.evaluation_results is None:
+        with st.spinner("Evaluating your interaction..."):
+             score_str, rationale, strengths, improvement_areas = generate_ai_assessment(
+                 st.session_state.chat_history,
+                 st.session_state.current_scenario
+             )
+             st.session_state.evaluation_results = {
+                 "score": score_str,
+                 "rationale": rationale,
+                 "strengths": strengths,
+                 "improvement": improvement_areas
+             }
+
+    results = st.session_state.evaluation_results
+    if results:
+        st.subheader(f"Score: {results['score']}")
+        with st.expander("Rationale", expanded=False):
+             st.markdown(results['rationale'])
+        st.subheader("Strengths")
+        st.markdown(results['strengths'])
+        st.subheader("Areas for Improvement")
+        st.markdown(results['improvement'])
+    else:
+        st.warning("Evaluation results are not available.")
+
+    if st.button("Select New Scenario"):
+        # Reset session state for a new scenario selection
         st.session_state.current_scenario = None
         st.session_state.first_message_sent = False
         st.session_state.expert_first_message_sent = False
-        st.session_state.scenario_ended = False  
-        st.session_state.chat_history = []  
-        st.rerun()  # Refresh the app to show the chat interface again
+        st.session_state.scenario_ended = False
+        st.session_state.chat_history = []
+        st.session_state.expert_chat_history = []
+        st.session_state.evaluation_results = None
+        st.session_state.evaluation_submitted = False
+        st.rerun() 
 
-
+# --- Footer ---
 footer_html = """
 <style>
 .footer {
@@ -833,76 +846,27 @@ footer_html = """
     justify-content: flex-end;
     color: var(--st-text-color);
 }
-
-/* Light mode footer background */
-body[data-theme="light"] .footer {
-    background-color: #ffffff;
-}
-
-/* Dark mode footer background */
-body[data-theme="dark"] .footer {
-    background-color: #1e1e1e;
-}
-
-.footer details summary {
-    list-style: none;
-}
-.footer details summary::-webkit-details-marker {
-    display: none;
-}
-.footer details summary {
-    cursor: pointer;
-    font-weight: bold;
-    padding: 3px;
-    color: inherit;
-    font-size: 14px;
-}
-
-.footer details[open] summary {
-    content: "Back";
-}
-
-/* Background for the expanded help content */
-.footer details[open] {
-    position: absolute;
-    bottom: 50px;
-    right: 20px;
-    border-radius: 8px;
-    padding: 10px;
-    width: 300px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-    background-color: #f8f8f8;
-    color: #333;
-}
-
-body[data-theme="light"] .footer details[open] {
-    background-color: #ffffff;
-    color: #333;
-}
-
-body[data-theme="dark"] .footer details[open] {
-    background-color: #333;
-    color: #f0f2f6;
-}
-
-.footer details[open] p {
-    text-align: left;
-    margin: 5px 0;
-    color: inherit;
-}
+body[data-theme="light"] .footer { background-color: #ffffff; }
+body[data-theme="dark"] .footer { background-color: #1e1e1e; }
+.footer details summary { list-style: none; }
+.footer details summary::-webkit-details-marker { display: none; }
+.footer details summary { cursor: pointer; font-weight: bold; padding: 3px; color: inherit; font-size: 14px; }
+.footer details[open] summary { content: "Back"; }
+.footer details[open] { position: absolute; bottom: 50px; right: 20px; border-radius: 8px; padding: 10px; width: 300px; box-shadow: 0 0 10px rgba(0,0,0,0.1); background-color: #f8f8f8; color: #333; }
+body[data-theme="light"] .footer details[open] { background-color: #ffffff; color: #333; }
+body[data-theme="dark"] .footer details[open] { background-color: #333; color: #f0f2f6; }
+.footer details[open] p { text-align: left; margin: 5px 0; color: inherit; }
 </style>
-
 <div class="footer">
     <details>
         <summary>❓ Help</summary>
         <p>👩‍🏫 <b>Want to start the chat?</b> Pick a scenario from the "Select a scenario..." dropdown and begin chatting with the student.</p>
         <p>💡 <b>Need expert advice?</b> The Teacher Expert panel on the left offers real-time strategies.</p>
-        <p>📈 <b>Get personalized feedback!</b> Your chats are evaluated to improve your teaching techniques. Click "end scenario" for feedback.</p>
-        <p>💬 <b>Want to start a new chat?</b> End the scenario and click the "Close Evaluation" button.</p>
+        <p>📈 <b>Get personalized feedback!</b> Your chats are evaluated to improve your teaching techniques. Click "End Scenario and Get Feedback" for the assessment.</p>
+        <p>💬 <b>Want to start a new chat?</b> After getting feedback, click the "Select New Scenario" button.</p>
         <p>⚙️ <b>Want to change the look of the page?</b> Click the three dots in the top right corner then "Settings".</p>
     </details>
 </div>
-
 <script>
     document.querySelectorAll('.footer details').forEach((details) => {
         details.addEventListener('toggle', () => {
@@ -913,4 +877,5 @@ body[data-theme="dark"] .footer details[open] {
 </script>
 """
 
-st.markdown(footer_html, unsafe_allow_html=True)
+if not st.session_state.scenario_ended or st.session_state.current_scenario:
+     st.markdown(footer_html, unsafe_allow_html=True)
