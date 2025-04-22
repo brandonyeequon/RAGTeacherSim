@@ -238,7 +238,7 @@ def get_openai_client():
         st.error(f"Failed to initialize OpenAI client: {e}", icon="🚨")
         return None
 
-def retrieve_textbook_context(query: str, top_k: int = 5) -> list[str]:
+def retrieve_textbook_context(query: str, top_k: int = 4) -> list[str]:
     """Retrieves relevant textbook passages using OpenAI embeddings and FAISS."""
     if not query:
         return []
@@ -514,7 +514,7 @@ def generate_ai_assessment(chat_history: List[Dict[str, str]], scenario: Optiona
     print(f"Constructed evaluation retrieval query: {retrieval_query[:200]}...")
     
     # Retrieve more passages than default (increasing from 3 to 7 for more comprehensive context)
-    passages = retrieve_textbook_context(retrieval_query, top_k=7)
+    passages = retrieve_textbook_context(retrieval_query, top_k=4)
     
     # Process and organize passages for better context usage
     if passages:
@@ -561,6 +561,7 @@ Follow these guidelines:
 3. Compare the teacher's approach to the specific strategies mentioned in the textbook passages
 4. Evaluate how well the teacher achieved their objective as specified in the scenario
 5. Provide specific, actionable feedback based on the textbook principles
+6. Be leanient in the score you give, but be realisitc with written feedback
 
 VERY IMPORTANT: You MUST provide your evaluation in EXACTLY the following format using these EXACT headings:
 
