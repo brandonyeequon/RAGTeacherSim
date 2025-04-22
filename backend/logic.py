@@ -11,8 +11,8 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # Model config
 OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"
-OPENAI_STUDENT_MODEL = "gpt-4o-mini"
-OPENAI_EXPERT_MODEL = "gpt-4o"
+OPENAI_STUDENT_MODEL = "gpt-4.1-mini-2025-04-14"
+OPENAI_EXPERT_MODEL = "gpt-4.1-2025-04-14"
 HUGGINGFACE_REPO_ID = "brandonyeequon/teacher_faiss"
 HUGGINGFACE_TOKEN = os.getenv("HUGGINGFACE_TOKEN")
 HF_FAISS_INDEX_PATH = "vectorized_textbooks.faiss"
@@ -210,7 +210,7 @@ def evaluate_teacher_effectiveness(chat_history: list, scenario_id: str = None) 
         for m in chat_history
     )
     prompt = f"""
-Evaluate the effectiveness of this teacher-student interaction in resolving the objective included in the context. Be harsh but fair.:
+Evaluate the effectiveness of this teacher-student interaction in resolving the objective included in the context. Generous in your rating.:
 Context: {context}
 Teacher-Student interaction: {transcript}
 

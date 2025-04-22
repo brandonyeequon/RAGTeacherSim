@@ -238,7 +238,7 @@ def get_openai_client():
         st.error(f"Failed to initialize OpenAI client: {e}", icon="🚨")
         return None
 
-def retrieve_textbook_context(query: str, top_k: int = 3) -> list[str]:
+def retrieve_textbook_context(query: str, top_k: int = 5) -> list[str]:
     """Retrieves relevant textbook passages using OpenAI embeddings and FAISS."""
     if not query:
         return []
