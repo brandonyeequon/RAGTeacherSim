@@ -36,7 +36,7 @@ HF_TEXTBOOK_PASSAGES_PATH = "textbook_passages.pkl"  # Relative path in the repo
 
 # Embedding and model configuration
 OPENAI_EMBEDDING_MODEL = "text-embedding-3-small"
-OPENAI_STUDENT_MODEL = "gpt-4.1-mini-2025-04-14"
+OPENAI_STUDENT_MODEL = "gpt-4.1-2025-04-14"
 OPENAI_EXPERT_MODEL = "gpt-4.1-2025-04-14" # Use the more powerful model for evaluation
 
 # --- OpenAI API Key Setup ---
@@ -596,7 +596,7 @@ Your evaluation should:
 2. Analyze specific exchanges between teacher and student
 3. Reference particular principles from the textbooks
 4. Be specific about examples from the conversation
-5. If the teacher performs well for a short session, give them a high score even if they don't follow all the suggusted material exactly. If they perform badly though, give a low score.
+5. If the teacher performs well for a short session, give them a high score even if they don't follow all the suggested material exactly. If they perform badly though, give a low score.
 
 Remember to format your response EXACTLY as specified with the headings: Score, Rationale, Strengths, and Areas for Improvement.
 """
