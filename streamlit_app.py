@@ -596,6 +596,7 @@ Your evaluation should:
 2. Analyze specific exchanges between teacher and student
 3. Reference particular principles from the textbooks
 4. Be specific about examples from the conversation
+5. If the teacher performs well for a short session, give them a high score even if they don't follow all the suggusted material exactly. If they perform badly though, give a low score.
 
 Remember to format your response EXACTLY as specified with the headings: Score, Rationale, Strengths, and Areas for Improvement.
 """
