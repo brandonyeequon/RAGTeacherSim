@@ -184,7 +184,7 @@ st.markdown(
 if not st.session_state.current_scenario:
     col1, col2, col3 = st.columns([1, 4, 1]) 
     with col2:
-        st.image("assets/academiq_logo.png", use_container_width=True)
+        st.image("assets/academiq_logo.png")
 
     st.write("""
     Transform the way you prepare for the classroom with our AI-powered teaching assistant!
